@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">InventoryApp</string>
+    <string name="settings_menu_item">Settings</string>
+    <string name="setting_title">Products settings</string>
+    <string name="edit_label">Edit product</string>
+    <string name="delete_all_product">Delete all product</string>
+    <string name="edit_product">Edit product</string>
+    <string name="delete_product">Delete product</string>
+    <string name="populate_database">Populate database</string>
+    <string name="save">Save</string>
 </resources>

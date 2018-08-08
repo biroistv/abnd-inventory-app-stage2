@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.biro.inventoryapp.data.ProductDbHelper;
 import com.example.biro.inventoryapp.handlers.DatabaseHandler;
@@ -33,7 +34,7 @@ public class EditActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseHandler.InsertData(
+                Long newRowId = DatabaseHandler.InsertData(
                         mDbHelper,
                         nameEditText,
                         priceEditText,
@@ -41,6 +42,11 @@ public class EditActivity extends AppCompatActivity {
                         suppNameEditText,
                         suppPhoneEditText);
                 finish();
+
+                Toast.makeText(
+                        EditActivity.this,
+                        "New product added to the database with id:" + newRowId.toString(),
+                        Toast.LENGTH_SHORT);
             }
         });
     }

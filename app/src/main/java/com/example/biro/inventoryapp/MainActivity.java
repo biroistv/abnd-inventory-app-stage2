@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.product_populate: {
                 DatabaseHandler.InsertDummyData(mDbHelper);
-                DatabaseHandler.printRowCount(mDbHelper);
+                DatabaseHandler.printRowCount(mDbHelper, this);
                 return true;
             }
             case R.id.product_delete: {

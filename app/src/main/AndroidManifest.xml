@@ -19,6 +19,11 @@
         <activity
             android:name=".EditActivity"
             android:label="@string/edit_label"/>
+        <!-- adding provider -->
+        <provider
+            android:authorities="com.example.biro.inventoryapp"
+            android:name=".data.ProductProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

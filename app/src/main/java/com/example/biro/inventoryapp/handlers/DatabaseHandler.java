@@ -2,7 +2,6 @@ package com.example.biro.inventoryapp.handlers;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -10,6 +9,7 @@ import android.widget.EditText;
 
 import com.example.biro.inventoryapp.data.ProductContract;
 import com.example.biro.inventoryapp.data.ProductDbHelper;
+import com.example.biro.inventoryapp.data.ProductProvider;
 
 
 public class DatabaseHandler {
@@ -26,7 +26,7 @@ public class DatabaseHandler {
             Log.d(TAG, "IsDbAccesible: " + "false");
     }
 
-    public static void InsertDummyData(ProductDbHelper mDbHelper) {
+    public static Long InsertDummyData(ProductDbHelper mDbHelper) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -43,9 +43,11 @@ public class DatabaseHandler {
 
         if (db.isOpen())
             db.close();
+
+        return newRowId;
     }
 
-    public static void InsertData(ProductDbHelper mDBHelper, EditText... editTexts) {
+    public static Long InsertData(ProductDbHelper mDBHelper, EditText... editTexts) {
         SQLiteDatabase db = mDBHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -63,6 +65,8 @@ public class DatabaseHandler {
 
         if (db.isOpen())
             db.close();
+
+        return newRowId;
     }
 
     public static void ClearDatabase(ProductDbHelper mDbHelper) {
@@ -75,13 +79,40 @@ public class DatabaseHandler {
         );
     }
 
-    public static void printRowCount(ProductDbHelper mDbHelper) {
+    public static void printRowCount(ProductDbHelper mDbHelper, Context context) {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String[] project = {
+                ProductContract.ProductEntry._ID,
+                ProductContract.ProductEntry.COLUMN_NAME,
+                ProductContract.ProductEntry.COLUMN_PRICE,
+                ProductContract.ProductEntry.COLUMN_QUANTITY,
+                ProductContract.ProductEntry.COLUMN_SUPPLIER_NAME,
+                ProductContract.ProductEntry.COLUMN_SUPPLIER_PHONE
+        };
 
         Cursor cursor = null;
 
         try{
-            cursor = db.rawQuery("select * from " + ProductContract.ProductEntry.TABLE_NAME, null);
+            /*cursor = db.query(
+                    ProductContract.ProductEntry.TABLE_NAME,
+                    project,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );*/
+
+            cursor = context.getContentResolver().query(
+                    ProductContract.ProductEntry.CONTENT_URI,
+                    project,
+                    null,
+                    null,
+                    null
+            );
+
+
             Log.d(TAG, "printRowCount: " + cursor.getCount());
         }finally {
             if (cursor != null)

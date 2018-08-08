@@ -8,4 +8,8 @@
     <string name="delete_product">Delete product</string>
     <string name="populate_database">Populate database</string>
     <string name="save">Save</string>
+    <string name="failed_product_saving">Error with saving product</string>
+    <string name="successfull_product_saving">Product saved successfully</string>
+    <string name="dummy_save_failed">Failed saving DummyData</string>
+    <string name="dummy_save_success">Dummy data saved</string>
 </resources>

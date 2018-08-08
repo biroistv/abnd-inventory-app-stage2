@@ -1,12 +1,16 @@
 package com.example.biro.inventoryapp.handlers;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.biro.inventoryapp.R;
 import com.example.biro.inventoryapp.data.ProductContract;
 import com.example.biro.inventoryapp.data.ProductDbHelper;
 import com.example.biro.inventoryapp.data.ProductProvider;
@@ -23,10 +27,10 @@ public class DatabaseHandler {
             Log.d(TAG, "IsDbAccessible: " + "true");
             db.close();
         }else
-            Log.d(TAG, "IsDbAccesible: " + "false");
+            Log.d(TAG, "IsDbAccessible: " + "false");
     }
 
-    public static Long InsertDummyData(ProductDbHelper mDbHelper) {
+    public static void InsertDummyData(ProductDbHelper mDbHelper, Context context) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -36,18 +40,21 @@ public class DatabaseHandler {
         values.put(ProductContract.ProductEntry.COLUMN_SUPPLIER_NAME, "Anon");
         values.put(ProductContract.ProductEntry.COLUMN_SUPPLIER_PHONE, "1234567");
 
-        Long newRowId = db.insert(
-                ProductContract.ProductEntry.TABLE_NAME,
-                null,
-                values);
+        Uri newRowId = context.getContentResolver().insert(
+                ProductContract.ProductEntry.CONTENT_URI,
+                values
+        );
+
+        if (newRowId == null)
+            Toast.makeText(context, R.string.dummy_save_failed, Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(context, R.string.dummy_save_success, Toast.LENGTH_SHORT).show();
 
         if (db.isOpen())
             db.close();
-
-        return newRowId;
     }
 
-    public static Long InsertData(ProductDbHelper mDBHelper, EditText... editTexts) {
+    public static void InsertData(ProductDbHelper mDBHelper, Context context, EditText... editTexts ) {
         SQLiteDatabase db = mDBHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -57,16 +64,18 @@ public class DatabaseHandler {
         values.put(ProductContract.ProductEntry.COLUMN_SUPPLIER_NAME, editTexts[3].getText().toString().trim());
         values.put(ProductContract.ProductEntry.COLUMN_SUPPLIER_PHONE, editTexts[4].getText().toString().trim());
 
-        Long newRowId = db.insert(
-                ProductContract.ProductEntry.TABLE_NAME,
-                null,
+        Uri newRowId = context.getContentResolver().insert(
+                ProductContract.ProductEntry.CONTENT_URI,
                 values
         );
 
+        if (newRowId == null)
+            Toast.makeText(context, R.string.failed_product_saving, Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(context, R.string.successfull_product_saving, Toast.LENGTH_SHORT).show();
+
         if (db.isOpen())
             db.close();
-
-        return newRowId;
     }
 
     public static void ClearDatabase(ProductDbHelper mDbHelper) {
@@ -77,46 +86,5 @@ public class DatabaseHandler {
                 null,
                 null
         );
-    }
-
-    public static void printRowCount(ProductDbHelper mDbHelper, Context context) {
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        String[] project = {
-                ProductContract.ProductEntry._ID,
-                ProductContract.ProductEntry.COLUMN_NAME,
-                ProductContract.ProductEntry.COLUMN_PRICE,
-                ProductContract.ProductEntry.COLUMN_QUANTITY,
-                ProductContract.ProductEntry.COLUMN_SUPPLIER_NAME,
-                ProductContract.ProductEntry.COLUMN_SUPPLIER_PHONE
-        };
-
-        Cursor cursor = null;
-
-        try{
-            /*cursor = db.query(
-                    ProductContract.ProductEntry.TABLE_NAME,
-                    project,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-            );*/
-
-            cursor = context.getContentResolver().query(
-                    ProductContract.ProductEntry.CONTENT_URI,
-                    project,
-                    null,
-                    null,
-                    null
-            );
-
-
-            Log.d(TAG, "printRowCount: " + cursor.getCount());
-        }finally {
-            if (cursor != null)
-                cursor.close();
-        }
     }
 }

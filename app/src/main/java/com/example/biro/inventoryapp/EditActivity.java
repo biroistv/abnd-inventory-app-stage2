@@ -34,18 +34,21 @@ public class EditActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Long newRowId = DatabaseHandler.InsertData(
+                DatabaseHandler.InsertData(
                         mDbHelper,
+                        EditActivity.this,
                         nameEditText,
                         priceEditText,
                         quantityEditText,
                         suppNameEditText,
-                        suppPhoneEditText);
+                        suppPhoneEditText
+                        );
+
                 finish();
 
                 Toast.makeText(
                         EditActivity.this,
-                        "New product added to the database with id:" + newRowId.toString(),
+                        "New product added to the database",
                         Toast.LENGTH_SHORT);
             }
         });

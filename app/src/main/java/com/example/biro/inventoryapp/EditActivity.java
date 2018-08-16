@@ -1,13 +1,11 @@
 package com.example.biro.inventoryapp;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.example.biro.inventoryapp.data.ProductDbHelper;
 import com.example.biro.inventoryapp.handlers.DatabaseHandler;
 
 import butterknife.BindView;
@@ -28,8 +26,6 @@ public class EditActivity extends AppCompatActivity {
     @BindView(R.id.supp_phone_edittext)
     EditText suppPhoneEditText;
 
-    private ProductDbHelper mDbHelper = new ProductDbHelper(this);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +38,6 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 boolean saveSuccess = DatabaseHandler.InsertData(
-                        mDbHelper,
                         EditActivity.this,
                         nameEditText,
                         priceEditText,
@@ -51,14 +46,8 @@ public class EditActivity extends AppCompatActivity {
                         suppPhoneEditText
                 );
 
-                if (saveSuccess) {
+                if (saveSuccess)
                     finish();
-
-                    Toast.makeText(
-                            EditActivity.this,
-                            "New product added to the database",
-                            Toast.LENGTH_SHORT);
-                }
             }
         });
     }

@@ -11,6 +11,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.biro.inventoryapp.handlers.DataState;
+import com.example.biro.inventoryapp.handlers.DataValidationHandler;
+
 import static android.content.ContentValues.TAG;
 
 public class ProductProvider extends ContentProvider{
@@ -25,12 +28,12 @@ public class ProductProvider extends ContentProvider{
 
     static {
         sUriMatcher.addURI(
-                ProductContract.CONTENT_AUTHORTIY,
+                ProductContract.CONTENT_AUTHORITY,
                 ProductContract.PATH_PRODUCTS,
                 PRODUCTS);
 
         sUriMatcher.addURI(
-                ProductContract.CONTENT_AUTHORTIY,
+                ProductContract.CONTENT_AUTHORITY,
                 ProductContract.PATH_PRODUCTS + "/#",
                 PRODUCT_ID
         );
@@ -89,7 +92,16 @@ public class ProductProvider extends ContentProvider{
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        return null;
+        final int match = sUriMatcher.match(uri);
+
+        switch (match){
+            case PRODUCTS:
+                return ProductContract.ProductEntry.CONTENT_LIST_TYPE;
+            case PRODUCT_ID:
+                return ProductContract.ProductEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalArgumentException("Unknown uri " + uri + "with match" + match);
+        }
     }
 
     @Nullable
@@ -124,11 +136,129 @@ public class ProductProvider extends ContentProvider{
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+
+        switch (match){
+            case PRODUCTS: {
+                return db.delete(ProductContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
+            }
+            case PRODUCT_ID: {
+                selection = ProductContract.ProductEntry._ID + "=?";
+                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
+
+                return db.delete(ProductContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
+            }
+            default:
+                throw new IllegalArgumentException("Delete is not supported for " + uri);
+        }
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PRODUCTS: {
+                assert values != null;
+                return UpdateData(values, selection, selectionArgs);
+            }
+            case PRODUCT_ID: {
+                selection = ProductContract.ProductEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri))};
+                assert values != null;
+                return UpdateData(values, selection, selectionArgs);
+            }
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
     }
+
+    private int UpdateData(ContentValues values, String selection, String[] selectionArgs){
+        DataState dataState;
+
+        if (values.containsKey(ProductContract.ProductEntry.COLUMN_NAME)) {
+            String productName = values.getAsString(ProductContract.ProductEntry.COLUMN_NAME);
+            dataState = DataValidationHandler.checkDataValidity(productName, "[a-zA-Z0-9]+");
+            switch (dataState){
+                case INVALID: {
+                    throw new IllegalArgumentException("Product requires a valid name");
+                }
+                case EMPTY: {
+                    throw new IllegalArgumentException("Product requires a name");
+                }
+            }
+        }
+
+        if (values.containsKey(ProductContract.ProductEntry.COLUMN_PRICE)) {
+            String productPrice = values.getAsString(ProductContract.ProductEntry.COLUMN_PRICE);
+            dataState = DataValidationHandler.checkDataValidity(productPrice, "\\d+");
+            switch (dataState){
+                case VALID: {
+                    Integer value = values.getAsInteger(ProductContract.ProductEntry.COLUMN_PRICE);
+                    if (value < 0)
+                        throw new IllegalArgumentException("Product price cannot be negative");
+                }
+                case INVALID: {
+                    throw new IllegalArgumentException("Product requires a valid price");
+                }
+            }
+        }
+
+        if (values.containsKey(ProductContract.ProductEntry.COLUMN_QUANTITY)) {
+            String productQuantity = values.getAsString(ProductContract.ProductEntry.COLUMN_QUANTITY);
+            dataState = DataValidationHandler.checkDataValidity(productQuantity, "\\d+");
+            switch (dataState){
+                case VALID: {
+                    Integer value = values.getAsInteger(ProductContract.ProductEntry.COLUMN_QUANTITY);
+                    if (value < 0)
+                        throw new IllegalArgumentException("Product quantity cannot be negative");
+                }
+                case INVALID: {
+                    throw new IllegalArgumentException("Product requires a valid quantity");
+                }
+            }
+        }
+
+        if (values.containsKey(ProductContract.ProductEntry.COLUMN_SUPPLIER_NAME)) {
+            String supplierName = values.getAsString(ProductContract.ProductEntry.COLUMN_SUPPLIER_NAME);
+            dataState = DataValidationHandler.checkDataValidity(supplierName, "[a-zA-Z]+");
+            switch (dataState){
+                case INVALID: {
+                    throw new IllegalArgumentException("Supplier requires a valid name");
+                }
+                case EMPTY: {
+                    throw new IllegalArgumentException("Supplier requires a name");
+                }
+            }
+        }
+
+        if (values.containsKey(ProductContract.ProductEntry.COLUMN_SUPPLIER_PHONE)) {
+            String supplierPhone = values.getAsString(ProductContract.ProductEntry.COLUMN_SUPPLIER_PHONE);
+
+            dataState = DataValidationHandler.checkDataValidity(
+                    supplierPhone,
+                    "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}");
+
+            switch (dataState){
+                case INVALID: {
+                    throw new IllegalArgumentException("Supplier phone requires a valid number");
+                }
+                case EMPTY: {
+                    throw new IllegalArgumentException("Supplier phone requires a number");
+                }
+            }
+        }
+
+        if (values.size() == 0) {
+            return 0;
+        }
+
+        // Otherwise, get writable database to update the data
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        // Returns the number of database rows affected by the update statement
+        return database.update(ProductContract.ProductEntry.TABLE_NAME, values, selection, selectionArgs);
+    }
+
 }

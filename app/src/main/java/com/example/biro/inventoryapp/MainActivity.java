@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.product_populate: {
-                DatabaseHandler.InsertDummyData(mDbHelper, this);
+                DatabaseHandler.InsertDummyData( this);
                 return true;
             }
             case R.id.product_delete: {
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.delete_all_product: {
-                DatabaseHandler.ClearDatabase(mDbHelper);
+                DatabaseHandler.clearProductTable(MainActivity.this);
                 return true;
             }
         }

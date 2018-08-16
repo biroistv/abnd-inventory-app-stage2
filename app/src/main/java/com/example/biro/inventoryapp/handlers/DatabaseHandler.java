@@ -34,8 +34,7 @@ public class DatabaseHandler {
             Log.d(TAG, "IsDbAccessible: " + "false");
     }
 
-    public static void InsertDummyData(ProductDbHelper mDbHelper, Context context) {
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+    public static void InsertDummyData(Context context) {
 
         ContentValues values = new ContentValues();
         values.put(ProductContract.ProductEntry.COLUMN_NAME, "Bicycle");
@@ -54,13 +53,9 @@ public class DatabaseHandler {
         else
             Toast.makeText(context, R.string.dummy_save_success, Toast.LENGTH_SHORT).show();
 
-        if (db.isOpen())
-            db.close();
     }
 
-    public static boolean InsertData(ProductDbHelper mDBHelper, Context context, EditText... editTexts) {
-
-        SQLiteDatabase db = mDBHelper.getWritableDatabase();
+    public static boolean InsertData(Context context, EditText... editTexts) {
         ContentValues values = new ContentValues();
 
         /*
@@ -68,7 +63,7 @@ public class DatabaseHandler {
          * */
         String productName = editTexts[0].getText().toString();
         DataState dataState =
-                DataValidationHandler.checkDataValidity(productName, "[a-zA-Z1-9]+");
+                DataValidationHandler.checkDataValidity(productName, "[a-zA-Z0-9]+");
 
         switch (dataState) {
             case EMPTY: {
@@ -201,20 +196,16 @@ public class DatabaseHandler {
         else
             Toast.makeText(context, R.string.successfull_product_saving, Toast.LENGTH_SHORT).show();
 
-
-        if (db.isOpen())
-            db.close();
-
         return true;
     }
 
-    public static void ClearDatabase(ProductDbHelper mDbHelper) {
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-        db.delete(
-                ProductContract.ProductEntry.TABLE_NAME,
+    public static void clearProductTable(Context context) {
+        int rowEffected = context.getContentResolver().delete(
+                ProductContract.ProductEntry.CONTENT_URI,
                 null,
                 null
         );
+
+        Log.d(TAG, "clearProductTable: row effected = " + rowEffected);
     }
 }

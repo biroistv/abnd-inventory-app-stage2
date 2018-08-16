@@ -15,12 +15,18 @@ import butterknife.ButterKnife;
 
 public class EditActivity extends AppCompatActivity {
 
-    @BindView(R.id.save_button) Button saveButton;
-    @BindView(R.id.name_edittext) EditText nameEditText;
-    @BindView(R.id.price_edittext) EditText priceEditText;
-    @BindView(R.id.quantity_edittext) EditText quantityEditText;
-    @BindView(R.id.supp_name_edittext) EditText suppNameEditText;
-    @BindView(R.id.supp_phone_edittext) EditText suppPhoneEditText;
+    @BindView(R.id.save_button)
+    Button saveButton;
+    @BindView(R.id.name_edittext)
+    EditText nameEditText;
+    @BindView(R.id.price_edittext)
+    EditText priceEditText;
+    @BindView(R.id.quantity_edittext)
+    EditText quantityEditText;
+    @BindView(R.id.supp_name_edittext)
+    EditText suppNameEditText;
+    @BindView(R.id.supp_phone_edittext)
+    EditText suppPhoneEditText;
 
     private ProductDbHelper mDbHelper = new ProductDbHelper(this);
 
@@ -34,7 +40,8 @@ public class EditActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseHandler.InsertData(
+
+                boolean saveSuccess = DatabaseHandler.InsertData(
                         mDbHelper,
                         EditActivity.this,
                         nameEditText,
@@ -42,14 +49,16 @@ public class EditActivity extends AppCompatActivity {
                         quantityEditText,
                         suppNameEditText,
                         suppPhoneEditText
-                        );
+                );
 
-                finish();
+                if (saveSuccess) {
+                    finish();
 
-                Toast.makeText(
-                        EditActivity.this,
-                        "New product added to the database",
-                        Toast.LENGTH_SHORT);
+                    Toast.makeText(
+                            EditActivity.this,
+                            "New product added to the database",
+                            Toast.LENGTH_SHORT);
+                }
             }
         });
     }

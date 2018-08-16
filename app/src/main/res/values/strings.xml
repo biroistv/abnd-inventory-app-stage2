@@ -12,4 +12,6 @@
     <string name="successfull_product_saving">Product saved successfully</string>
     <string name="dummy_save_failed">Failed saving DummyData</string>
     <string name="dummy_save_success">Dummy data saved</string>
+    <string name="invalid_name">Invalid data in the name field</string>
+    <string name="supllier_name_invalid">The supplier name field cannot be empty!</string>
 </resources>

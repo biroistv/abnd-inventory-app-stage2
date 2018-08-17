@@ -11,7 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.biro.inventoryapp.handlers.DataState;
+import com.example.biro.inventoryapp.state.State;
 import com.example.biro.inventoryapp.handlers.DataValidationHandler;
 
 import static android.content.ContentValues.TAG;
@@ -175,7 +175,7 @@ public class ProductProvider extends ContentProvider{
     }
 
     private int UpdateData(ContentValues values, String selection, String[] selectionArgs){
-        DataState dataState;
+        State dataState;
 
         if (values.containsKey(ProductContract.ProductEntry.COLUMN_NAME)) {
             String productName = values.getAsString(ProductContract.ProductEntry.COLUMN_NAME);

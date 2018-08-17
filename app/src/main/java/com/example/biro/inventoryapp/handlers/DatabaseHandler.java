@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.biro.inventoryapp.R;
 import com.example.biro.inventoryapp.data.ProductContract;
 import com.example.biro.inventoryapp.data.ProductDbHelper;
+import com.example.biro.inventoryapp.state.State;
 
 /**
  * This class provides some database managing methods.
@@ -20,19 +21,6 @@ public class DatabaseHandler {
     private static final String TAG = DatabaseHandler.class.getSimpleName();
     private static final int DEFAULT_PRICE = 0;
     private static final int DEFAULT_QUANTITY = 0;
-
-    /**
-     *
-     * */
-    public static void IsDbAccessible(ProductDbHelper mDbHelper) {
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        if (db.isOpen()) {
-            Log.d(TAG, "IsDbAccessible: " + "true");
-            db.close();
-        } else
-            Log.d(TAG, "IsDbAccessible: " + "false");
-    }
 
     public static void InsertDummyData(Context context) {
 
@@ -62,7 +50,7 @@ public class DatabaseHandler {
          *  Handling the name depend on the dataState.
          * */
         String productName = editTexts[0].getText().toString();
-        DataState dataState =
+        State dataState =
                 DataValidationHandler.checkDataValidity(productName, "[a-zA-Z0-9]+");
 
         switch (dataState) {
@@ -206,6 +194,8 @@ public class DatabaseHandler {
                 null
         );
 
-        Log.d(TAG, "clearProductTable: row effected = " + rowEffected);
+        Toast.makeText(context, rowEffected + " row deleted!", Toast.LENGTH_SHORT).show();
+
+        Log.d(TAG, "clearProductTable: row deleted=" + rowEffected);
     }
 }

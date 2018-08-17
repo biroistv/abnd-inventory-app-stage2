@@ -37,7 +37,7 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                boolean saveSuccess = DatabaseHandler.InsertData(
+                boolean saveSuccess = DatabaseHandler.insertData(
                         EditActivity.this,
                         nameEditText,
                         priceEditText,

@@ -86,6 +86,8 @@ public class ProductProvider extends ContentProvider{
             }
         }
 
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
         return cursor;
     }
 
@@ -130,8 +132,11 @@ public class ProductProvider extends ContentProvider{
         if (id == -1){
             Log.d(TAG, "insertProduct: Failed -> " + uri);
             return null;
-        }else
-            return ContentUris.withAppendedId(uri, id);
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        return ContentUris.withAppendedId(uri, id);
     }
 
     @Override
@@ -141,13 +146,21 @@ public class ProductProvider extends ContentProvider{
 
         switch (match){
             case PRODUCTS: {
-                return db.delete(ProductContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
+                int rowsDeleted = db.delete(ProductContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
+                if (rowsDeleted != 0)
+                    getContext().getContentResolver().notifyChange(uri, null);
+                return rowsDeleted;
             }
             case PRODUCT_ID: {
                 selection = ProductContract.ProductEntry._ID + "=?";
                 selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
 
-                return db.delete(ProductContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
+                int rowDeleted = db.delete(ProductContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
+
+                if (rowDeleted != 0)
+                    getContext().getContentResolver().notifyChange(uri, null);
+
+                return rowDeleted;
             }
             default:
                 throw new IllegalArgumentException("Delete is not supported for " + uri);
@@ -161,13 +174,25 @@ public class ProductProvider extends ContentProvider{
         switch (match) {
             case PRODUCTS: {
                 assert values != null;
-                return UpdateData(values, selection, selectionArgs);
+
+                int rowsUpdated = UpdateData(values, selection, selectionArgs);
+
+                if (rowsUpdated != 0)
+                    getContext().getContentResolver().notifyChange(uri, null);
+
+                return rowsUpdated;
             }
             case PRODUCT_ID: {
                 selection = ProductContract.ProductEntry._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri))};
                 assert values != null;
-                return UpdateData(values, selection, selectionArgs);
+
+                int rowUpdated = UpdateData(values, selection, selectionArgs);
+
+                if (rowUpdated != 0)
+                    getContext().getContentResolver().notifyChange(uri, null);
+
+                return rowUpdated;
             }
             default:
                 throw new IllegalArgumentException("Update is not supported for " + uri);

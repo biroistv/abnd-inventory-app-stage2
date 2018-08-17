@@ -2,8 +2,8 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/product_populate"
-        android:title="@string/populate_database"/>
+        android:id="@+id/add_dummy_data"
+        android:title="@string/add_dummy_data"/>
     <item
         android:id="@+id/product_delete"
         android:title="@string/delete_product"/>

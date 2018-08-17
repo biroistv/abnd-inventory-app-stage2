@@ -1,6 +1,9 @@
 package com.example.biro.inventoryapp;
 
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -9,23 +12,32 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.biro.inventoryapp.adapter.ProductCursorAdapter;
 import com.example.biro.inventoryapp.data.ProductContract;
-import com.example.biro.inventoryapp.data.ProductDbHelper;
 import com.example.biro.inventoryapp.handlers.DatabaseHandler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     @BindView(R.id.floating_action_button) FloatingActionButton floatingButton;
     @BindView(R.id.main_list_view) ListView productListView;
     @BindView(R.id.empty_view) View emptyView;
 
-    private ProductDbHelper mDbHelper = new ProductDbHelper(this);
+
+    private static final int PRODUCT_LOADER = 0;
+    private ProductCursorAdapter mCursorAdapter;
+
+    private static final String[] PROJECTION = new String[] {
+            ProductContract.ProductEntry._ID,
+            ProductContract.ProductEntry.COLUMN_NAME,
+            ProductContract.ProductEntry.COLUMN_PRICE,
+            ProductContract.ProductEntry.COLUMN_QUANTITY,
+            ProductContract.ProductEntry.COLUMN_SUPPLIER_NAME,
+            ProductContract.ProductEntry.COLUMN_SUPPLIER_PHONE
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,33 +54,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        displayProducts();
-    }
-
-    private void displayProducts(){
-
-        // TODO: add some instruction -> how to add new item to the database
-
-        String[] projection = {
-                ProductContract.ProductEntry._ID,
-                ProductContract.ProductEntry.COLUMN_NAME,
-                ProductContract.ProductEntry.COLUMN_PRICE,
-                ProductContract.ProductEntry.COLUMN_QUANTITY,
-                ProductContract.ProductEntry.COLUMN_SUPPLIER_NAME,
-                ProductContract.ProductEntry.COLUMN_SUPPLIER_PHONE
-        };
-
-        Cursor cursor = getContentResolver().query(
-                ProductContract.ProductEntry.CONTENT_URI,
-                projection,
-                null,
-                null,
-                null
-        );
-
-        ProductCursorAdapter adapter = new ProductCursorAdapter(this, cursor);
+        mCursorAdapter = new ProductCursorAdapter(this, null);
         productListView.setEmptyView(emptyView);
-        productListView.setAdapter(adapter);
+        productListView.setAdapter(mCursorAdapter);
+
+        getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
     }
 
     @Override
@@ -81,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
-            case R.id.product_populate: {
-                DatabaseHandler.InsertDummyData( this);
+            case R.id.add_dummy_data: {
+                DatabaseHandler.insertDummyData( this);
                 return true;
             }
             case R.id.product_delete: {
@@ -99,5 +89,27 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(
+                this,
+                ProductContract.ProductEntry.CONTENT_URI,
+                PROJECTION,
+                null,
+                null,
+                null
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mCursorAdapter.swapCursor(null);
     }
 }

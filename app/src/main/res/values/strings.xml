@@ -6,7 +6,7 @@
     <string name="delete_all_product">Delete all product</string>
     <string name="edit_product">Edit product</string>
     <string name="delete_product">Delete product</string>
-    <string name="populate_database">Populate database</string>
+    <string name="add_dummy_data">Add dummy data</string>
     <string name="save">Save</string>
     <string name="failed_product_saving">Error with saving product</string>
     <string name="successfull_product_saving">Product saved successfully</string>

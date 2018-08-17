@@ -2,7 +2,6 @@ package com.example.biro.inventoryapp.handlers;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.EditText;
@@ -10,7 +9,6 @@ import android.widget.Toast;
 
 import com.example.biro.inventoryapp.R;
 import com.example.biro.inventoryapp.data.ProductContract;
-import com.example.biro.inventoryapp.data.ProductDbHelper;
 import com.example.biro.inventoryapp.state.State;
 
 /**
@@ -22,7 +20,7 @@ public class DatabaseHandler {
     private static final int DEFAULT_PRICE = 0;
     private static final int DEFAULT_QUANTITY = 0;
 
-    public static void InsertDummyData(Context context) {
+    public static void insertDummyData(Context context) {
 
         ContentValues values = new ContentValues();
         values.put(ProductContract.ProductEntry.COLUMN_NAME, "Bicycle");
@@ -43,7 +41,7 @@ public class DatabaseHandler {
 
     }
 
-    public static boolean InsertData(Context context, EditText... editTexts) {
+    public static boolean insertData(Context context, EditText... editTexts) {
         ContentValues values = new ContentValues();
 
         /*

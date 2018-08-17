@@ -10,17 +10,17 @@ Program leírása
 
 - **Overall Layout**
 
-- [ ] The app conteins activities and/or fragments
+- [x] The app conteins activities and/or fragments
 - [ ] Add inventory
 - [ ] See Product Details
 - [ ] Edit Product Details
-- [ ] See a list of all inventory from a Main Activity
-- [ ] Using a single activity
+- [x] See a list of all inventory from a Main Activity
+- [x] Using a single activity
 - [ ] Using navigation pattern (Navigation Drawer, View Pager, Up/Back Navigation or Intents)
 
 - **List Item Layout in the Main Activity**
 
-- [ ] Each list item displays the Product Name, Price and Quantity
+- [x] Each list item displays the Product Name, Price and Quantity
 - [ ] Each list item contains a Sale `button` that redauce the total quantity of that particular product by one
 - [ ] Handling the negativ product quantity
 
@@ -34,7 +34,7 @@ Program leírása
 
 - **Default TextView**
 
-- [ ] When there is no information to display in the database, the layout displays a TextView with instructions on how to populate the database
+- [x] When there is no information to display in the database, the layout displays a TextView with instructions on how to populate the database
 
 ### Functionality
 
@@ -44,16 +44,16 @@ Program leírása
 
 - **ListView Population**
 
-- [ ] The Main Activity displaying the list of current inventory contains a ListView that populates with the current products stored in the table.
+- [x] The Main Activity displaying the list of current inventory contains a ListView that populates with the current products stored in the table.
 
 - **Add Product Button**
 
-- [ ] The Main Activity contains an Add Product Button prompts the user for product information and supplier information which are then properly stored in the table.
-- [ ] Before the information is added to the table, it must be validated - In particular, empty product information is not accepted. If user inputs invalid product information (name, price, quantity, supplier name, supplier phone number), instead of erroring out, the app includes logic to validate that no null values are accepted. If a null value is inputted, add a Toast that prompts the user to input the correct information before they can continue.
+- [x] The Main Activity contains an Add Product Button prompts the user for product information and supplier information which are then properly stored in the table.
+- [x] Before the information is added to the table, it must be validated - In particular, empty product information is not accepted. If user inputs invalid product information (name, price, quantity, supplier name, supplier phone number), instead of erroring out, the app includes logic to validate that no null values are accepted. If a null value is inputted, add a Toast that prompts the user to input the correct information before they can continue.
 
 - **Input Validation**
 
-- [ ] In the Edit Product Activity, user input is validated. In particular, empty product information is not accepted. If user inputs invalid product information (name, price, quantity, supplier name, supplier phone number), instead of erroring out, the app includes logic to validate that no null values are accepted. If a null value is inputted, add a Toast that prompts the user to input the correct information before they can continue.
+- [x] In the Edit Product Activity, user input is validated. In particular, empty product information is not accepted. If user inputs invalid product information (name, price, quantity, supplier name, supplier phone number), instead of erroring out, the app includes logic to validate that no null values are accepted. If a null value is inputted, add a Toast that prompts the user to input the correct information before they can continue.
 
 - **Sale Button**
 

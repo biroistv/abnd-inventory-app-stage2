@@ -16,7 +16,7 @@ import com.example.biro.inventoryapp.handlers.DataValidationHandler;
 
 import static android.content.ContentValues.TAG;
 
-public class ProductProvider extends ContentProvider{
+public class ProductProvider extends ContentProvider {
 
 
     private static final int PRODUCTS = 1;
@@ -52,8 +52,8 @@ public class ProductProvider extends ContentProvider{
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         Cursor cursor;
 
-        switch (sUriMatcher.match(uri)){
-            case PRODUCTS:{
+        switch (sUriMatcher.match(uri)) {
+            case PRODUCTS: {
                 cursor = db.query(
                         ProductContract.ProductEntry.TABLE_NAME,
                         projection,
@@ -67,7 +67,7 @@ public class ProductProvider extends ContentProvider{
             }
             case PRODUCT_ID: {
                 selection = ProductContract.ProductEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri))};
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 cursor = db.query(
                         ProductContract.ProductEntry.TABLE_NAME,
                         projection,
@@ -96,7 +96,7 @@ public class ProductProvider extends ContentProvider{
     public String getType(@NonNull Uri uri) {
         final int match = sUriMatcher.match(uri);
 
-        switch (match){
+        switch (match) {
             case PRODUCTS:
                 return ProductContract.ProductEntry.CONTENT_LIST_TYPE;
             case PRODUCT_ID:
@@ -110,12 +110,13 @@ public class ProductProvider extends ContentProvider{
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
 
-        switch (sUriMatcher.match(uri)){
+        switch (sUriMatcher.match(uri)) {
             case PRODUCTS: {
 
                 return insertProduct(uri, values);
             }
-            default: throw new IllegalArgumentException(" Illegal Argument :" + uri);
+            default:
+                throw new IllegalArgumentException(" Illegal Argument :" + uri);
         }
     }
 
@@ -129,7 +130,7 @@ public class ProductProvider extends ContentProvider{
                 values
         );
 
-        if (id == -1){
+        if (id == -1) {
             Log.d(TAG, "insertProduct: Failed -> " + uri);
             return null;
         }
@@ -144,7 +145,7 @@ public class ProductProvider extends ContentProvider{
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
 
-        switch (match){
+        switch (match) {
             case PRODUCTS: {
                 int rowsDeleted = db.delete(ProductContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
                 if (rowsDeleted != 0)
@@ -153,7 +154,7 @@ public class ProductProvider extends ContentProvider{
             }
             case PRODUCT_ID: {
                 selection = ProductContract.ProductEntry._ID + "=?";
-                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 int rowDeleted = db.delete(ProductContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
 
@@ -184,7 +185,7 @@ public class ProductProvider extends ContentProvider{
             }
             case PRODUCT_ID: {
                 selection = ProductContract.ProductEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri))};
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 assert values != null;
 
                 int rowUpdated = UpdateData(values, selection, selectionArgs);
@@ -199,13 +200,15 @@ public class ProductProvider extends ContentProvider{
         }
     }
 
-    private int UpdateData(ContentValues values, String selection, String[] selectionArgs){
+    private int UpdateData(ContentValues values, String selection, String[] selectionArgs) {
         State dataState;
+
+        // TODO: valahogy refaktorálni hogy Prokutomot kezeljen
 
         if (values.containsKey(ProductContract.ProductEntry.COLUMN_NAME)) {
             String productName = values.getAsString(ProductContract.ProductEntry.COLUMN_NAME);
             dataState = DataValidationHandler.checkDataValidity(productName, "[a-zA-Z0-9]+");
-            switch (dataState){
+            switch (dataState) {
                 case INVALID: {
                     throw new IllegalArgumentException("Product requires a valid name");
                 }
@@ -218,11 +221,12 @@ public class ProductProvider extends ContentProvider{
         if (values.containsKey(ProductContract.ProductEntry.COLUMN_PRICE)) {
             String productPrice = values.getAsString(ProductContract.ProductEntry.COLUMN_PRICE);
             dataState = DataValidationHandler.checkDataValidity(productPrice, "\\d+");
-            switch (dataState){
+            switch (dataState) {
                 case VALID: {
                     Integer value = values.getAsInteger(ProductContract.ProductEntry.COLUMN_PRICE);
                     if (value < 0)
                         throw new IllegalArgumentException("Product price cannot be negative");
+                    break;
                 }
                 case INVALID: {
                     throw new IllegalArgumentException("Product requires a valid price");
@@ -233,11 +237,12 @@ public class ProductProvider extends ContentProvider{
         if (values.containsKey(ProductContract.ProductEntry.COLUMN_QUANTITY)) {
             String productQuantity = values.getAsString(ProductContract.ProductEntry.COLUMN_QUANTITY);
             dataState = DataValidationHandler.checkDataValidity(productQuantity, "\\d+");
-            switch (dataState){
+            switch (dataState) {
                 case VALID: {
                     Integer value = values.getAsInteger(ProductContract.ProductEntry.COLUMN_QUANTITY);
                     if (value < 0)
                         throw new IllegalArgumentException("Product quantity cannot be negative");
+                    break;
                 }
                 case INVALID: {
                     throw new IllegalArgumentException("Product requires a valid quantity");
@@ -248,7 +253,7 @@ public class ProductProvider extends ContentProvider{
         if (values.containsKey(ProductContract.ProductEntry.COLUMN_SUPPLIER_NAME)) {
             String supplierName = values.getAsString(ProductContract.ProductEntry.COLUMN_SUPPLIER_NAME);
             dataState = DataValidationHandler.checkDataValidity(supplierName, "[a-zA-Z]+");
-            switch (dataState){
+            switch (dataState) {
                 case INVALID: {
                     throw new IllegalArgumentException("Supplier requires a valid name");
                 }
@@ -265,7 +270,7 @@ public class ProductProvider extends ContentProvider{
                     supplierPhone,
                     "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}");
 
-            switch (dataState){
+            switch (dataState) {
                 case INVALID: {
                     throw new IllegalArgumentException("Supplier phone requires a valid number");
                 }

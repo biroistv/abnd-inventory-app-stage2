@@ -11,10 +11,13 @@ public class DataValidationHandler {
      *  The product name is valid if the product name contains lower or uppercase letters and numbers ONLY.
      * */
     public static State checkDataValidity(String str, String regex) {
-        if ( str.matches(regex) )
-            return State.VALID;
-        if ( str.isEmpty())
+
+        if (str == null)
             return State.EMPTY;
+        else if (str.isEmpty())
+            return State.EMPTY;
+        else if (str.matches(regex))
+            return State.VALID;
         else
             return State.INVALID;
     }

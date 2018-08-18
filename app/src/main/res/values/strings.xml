@@ -4,7 +4,6 @@
     <string name="setting_title">Products settings</string>
     <string name="edit_label">Edit product</string>
     <string name="delete_all_product">Delete all product</string>
-    <string name="edit_product">Edit product</string>
     <string name="delete_product">Delete product</string>
     <string name="add_dummy_data">Add dummy data</string>
     <string name="save">Save</string>
@@ -18,4 +17,10 @@
     <string name="_99_plchld">99</string>
     <string name="sell">Sell</string>
     <string name="product_image">Product Image</string>
+    <string name="add_product">Add product</string>
+    <string name="edit_product">Edit product</string>
+    <string name="edit_fail">Failed editing the product</string>
+    <string name="edit_success">Production edit is done</string>
+    <string name="update_success">Update successful!</string>
+    <string name="update_fail">Update failed!</string>
 </resources>

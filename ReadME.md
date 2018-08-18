@@ -13,10 +13,10 @@ Program leírása
 - [x] The app conteins activities and/or fragments
 - [ ] Add inventory
 - [ ] See Product Details
-- [ ] Edit Product Details
+- [x] Edit Product Details
 - [x] See a list of all inventory from a Main Activity
 - [x] Using a single activity
-- [ ] Using navigation pattern (Navigation Drawer, View Pager, Up/Back Navigation or Intents)
+- [x] Using navigation pattern (Navigation Drawer, View Pager, Up/Back Navigation or Intents)
 
 - **List Item Layout in the Main Activity**
 

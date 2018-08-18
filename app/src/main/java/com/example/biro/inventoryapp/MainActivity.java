@@ -7,10 +7,9 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,11 +18,10 @@ import android.widget.ListView;
 
 import com.example.biro.inventoryapp.adapter.ProductCursorAdapter;
 import com.example.biro.inventoryapp.data.ProductContract;
-import com.example.biro.inventoryapp.handlers.DatabaseHandler;
+import com.example.biro.inventoryapp.data.DatabaseHandler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 

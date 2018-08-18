@@ -1,7 +1,6 @@
 package com.example.biro.inventoryapp;
 
 import android.app.LoaderManager;
-import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -12,9 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.biro.inventoryapp.data.ProductContract;
-import com.example.biro.inventoryapp.handlers.DatabaseHandler;
+import com.example.biro.inventoryapp.data.DatabaseHandler;
 import com.example.biro.inventoryapp.product.Product;
 
 import butterknife.BindView;
@@ -68,7 +68,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onClick(View v) {
 
-                Product product = getEditTextStrings();
+                Product product = getProductFromEditTexts();
 
                 if (mCurrentProductUri == null) {
                     boolean saveSuccess = DatabaseHandler.insertData(
@@ -76,8 +76,10 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
                             product
                     );
 
-                    if (saveSuccess)
+                    if (saveSuccess) {
+                        Toast.makeText(EditActivity.this, R.string.successfull_product_saving, Toast.LENGTH_SHORT).show();
                         finish();
+                    }
                 } else {
                     boolean updateSuccess = DatabaseHandler.updateData(
                             EditActivity.this,
@@ -87,8 +89,10 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
                             null
                     );
 
-                    if (updateSuccess)
+                    if (updateSuccess) {
+                        Toast.makeText(EditActivity.this, R.string.update_success, Toast.LENGTH_SHORT).show();
                         finish();
+                    }
                 }
             }
         });
@@ -136,7 +140,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         suppPhoneEditText.setText("");
     }
 
-    private Product getEditTextStrings() {
+    private Product getProductFromEditTexts() {
         return new Product(
                 EditActivity.this,
                 nameEditText.getText().toString(),

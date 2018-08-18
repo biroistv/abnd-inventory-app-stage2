@@ -1,25 +1,18 @@
-package com.example.biro.inventoryapp.handlers;
+package com.example.biro.inventoryapp.data;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.biro.inventoryapp.R;
 import com.example.biro.inventoryapp.data.ProductContract;
 import com.example.biro.inventoryapp.product.Product;
-import com.example.biro.inventoryapp.state.State;
 
 /**
  * This class provides some database managing methods.
  */
 public class DatabaseHandler {
-
-    private static final String TAG = DatabaseHandler.class.getSimpleName();
-    private static final int DEFAULT_PRICE = 0;
-    private static final int DEFAULT_QUANTITY = 0;
 
     public static void insertDummyData(Context context) {
         Product product = new Product(
@@ -51,6 +44,9 @@ public class DatabaseHandler {
     public static boolean insertData(Context context, Product product) {
         ContentValues values = product.getProductAsCValue();
 
+        if (values == null)
+            return false;
+
         Uri newUri = null;
         if (values != null)
             newUri = context.getContentResolver().insert(
@@ -58,11 +54,8 @@ public class DatabaseHandler {
                     values
             );
 
-        if (newUri == null) {
-            Toast.makeText(context, R.string.failed_product_saving, Toast.LENGTH_SHORT).show();
+        if (newUri == null)
             return false;
-        } else
-            Toast.makeText(context, R.string.successfull_product_saving, Toast.LENGTH_SHORT).show();
 
         return true;
     }
@@ -70,20 +63,22 @@ public class DatabaseHandler {
 
     public static boolean updateData(Context context, Uri currentProductUri, Product product, String selection, String[] selectionArgs) {
 
+        ContentValues values = product.getProductAsCValue();
+
+        if (values == null)
+            return false;
+
         int rowEffected = context.getContentResolver().update(
                 currentProductUri,
-                product.getProductAsCValue(),
+                values,
                 selection,
                 selectionArgs
         );
 
-        if (rowEffected != 0) {
-            Toast.makeText(context, R.string.update_success, Toast.LENGTH_SHORT).show();
+        if (rowEffected != 0)
             return true;
-        } else {
-            Toast.makeText(context, R.string.update_fail, Toast.LENGTH_SHORT).show();
+        else
             return false;
-        }
 
     }
 

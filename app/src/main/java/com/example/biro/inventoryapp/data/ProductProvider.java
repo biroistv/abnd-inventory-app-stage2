@@ -11,9 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.biro.inventoryapp.state.State;
-import com.example.biro.inventoryapp.handlers.DataValidationHandler;
-
 import static android.content.ContentValues.TAG;
 
 public class ProductProvider extends ContentProvider {
@@ -201,84 +198,6 @@ public class ProductProvider extends ContentProvider {
     }
 
     private int UpdateData(ContentValues values, String selection, String[] selectionArgs) {
-        State dataState;
-
-        // TODO: valahogy refaktorálni hogy Prokutomot kezeljen
-
-        if (values.containsKey(ProductContract.ProductEntry.COLUMN_NAME)) {
-            String productName = values.getAsString(ProductContract.ProductEntry.COLUMN_NAME);
-            dataState = DataValidationHandler.checkDataValidity(productName, "[a-zA-Z0-9]+");
-            switch (dataState) {
-                case INVALID: {
-                    throw new IllegalArgumentException("Product requires a valid name");
-                }
-                case EMPTY: {
-                    throw new IllegalArgumentException("Product requires a name");
-                }
-            }
-        }
-
-        if (values.containsKey(ProductContract.ProductEntry.COLUMN_PRICE)) {
-            String productPrice = values.getAsString(ProductContract.ProductEntry.COLUMN_PRICE);
-            dataState = DataValidationHandler.checkDataValidity(productPrice, "\\d+");
-            switch (dataState) {
-                case VALID: {
-                    Integer value = values.getAsInteger(ProductContract.ProductEntry.COLUMN_PRICE);
-                    if (value < 0)
-                        throw new IllegalArgumentException("Product price cannot be negative");
-                    break;
-                }
-                case INVALID: {
-                    throw new IllegalArgumentException("Product requires a valid price");
-                }
-            }
-        }
-
-        if (values.containsKey(ProductContract.ProductEntry.COLUMN_QUANTITY)) {
-            String productQuantity = values.getAsString(ProductContract.ProductEntry.COLUMN_QUANTITY);
-            dataState = DataValidationHandler.checkDataValidity(productQuantity, "\\d+");
-            switch (dataState) {
-                case VALID: {
-                    Integer value = values.getAsInteger(ProductContract.ProductEntry.COLUMN_QUANTITY);
-                    if (value < 0)
-                        throw new IllegalArgumentException("Product quantity cannot be negative");
-                    break;
-                }
-                case INVALID: {
-                    throw new IllegalArgumentException("Product requires a valid quantity");
-                }
-            }
-        }
-
-        if (values.containsKey(ProductContract.ProductEntry.COLUMN_SUPPLIER_NAME)) {
-            String supplierName = values.getAsString(ProductContract.ProductEntry.COLUMN_SUPPLIER_NAME);
-            dataState = DataValidationHandler.checkDataValidity(supplierName, "[a-zA-Z]+");
-            switch (dataState) {
-                case INVALID: {
-                    throw new IllegalArgumentException("Supplier requires a valid name");
-                }
-                case EMPTY: {
-                    throw new IllegalArgumentException("Supplier requires a name");
-                }
-            }
-        }
-
-        if (values.containsKey(ProductContract.ProductEntry.COLUMN_SUPPLIER_PHONE)) {
-            String supplierPhone = values.getAsString(ProductContract.ProductEntry.COLUMN_SUPPLIER_PHONE);
-
-            dataState = DataValidationHandler.checkDataValidity(
-                    supplierPhone,
-                    "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}");
-
-            switch (dataState) {
-                case INVALID: {
-                    throw new IllegalArgumentException("Supplier phone requires a valid number");
-                }
-                case EMPTY: {
-                    throw new IllegalArgumentException("Supplier phone requires a number");
-                }
-            }
-        }
 
         if (values.size() == 0) {
             return 0;

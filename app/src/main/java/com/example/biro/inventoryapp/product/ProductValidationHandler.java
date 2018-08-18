@@ -20,10 +20,7 @@ class ProductValidationHandler {
     }
 
     public static String nameChecker(String productName, Context context) {
-
-        State dataState = checkDataValidity(productName, "[a-zA-Z0-9]+");
-
-        switch (dataState) {
+        switch (checkDataValidity(productName, "[a-zA-Z0-9]+")) {
             case EMPTY: {
                 Toast.makeText(context, "The name field cannot be empty!", Toast.LENGTH_SHORT).show();
                 return null;
@@ -69,7 +66,7 @@ class ProductValidationHandler {
     /*
      * Handling the quantity
      * */
-    public static Integer checkQuantity(String quantity, Context context) {
+    public static Integer quantityChecker(String quantity, Context context) {
         switch (checkDataValidity(quantity, "\\d+")) {
             case VALID: {
                 Integer quantityValue = Integer.parseInt(quantity);
@@ -95,7 +92,7 @@ class ProductValidationHandler {
     /*
      * Handling the supplier name
      * */
-    public static String checkSupplier(String supplier, Context context) {
+    public static String supplierChecker(String supplier, Context context) {
         switch (checkDataValidity(supplier, "[a-zA-Z]+")) {
             case VALID: {
                 return supplier;
@@ -116,7 +113,7 @@ class ProductValidationHandler {
     /*
      * Handling the supplier phone number
      * */
-    public static String checkPshone(String phone, Context context) {
+    public static String phoneChecker(String phone, Context context) {
         switch (checkDataValidity(phone, "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")) {
             case VALID: {
                 return phone;

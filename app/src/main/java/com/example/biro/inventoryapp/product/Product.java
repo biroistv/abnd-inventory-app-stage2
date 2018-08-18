@@ -4,41 +4,29 @@ import android.content.ContentValues;
 import android.content.Context;
 
 import com.example.biro.inventoryapp.data.ProductContract;
-import com.example.biro.inventoryapp.handlers.DataValidationHandler;
 
 public class Product {
 
-    private Integer id;
     private String name;
     private Integer price;
     private Integer quantity;
     private String supplier;
     private String supplierPhone;
 
-    public Product(Context context, Integer id, String name, String price, String quantity, String supplier, String supplierPhone) {
-        this.id = id;
-        this.name = ProductValidationHandler.nameChecker(name, context);
-        this.price = ProductValidationHandler.priceChecker(price, context);
-        this.quantity = ProductValidationHandler.checkQuantity(quantity, context);
-        this.supplier = ProductValidationHandler.checkSupplier(supplier, context);
-        this.supplierPhone = ProductValidationHandler.checkPshone(supplierPhone, context);
-    }
-
     public Product(Context context, String name, String price, String quantity, String supplier, String supplierPhone) {
         this.name = ProductValidationHandler.nameChecker(name, context);
         this.price = ProductValidationHandler.priceChecker(price, context);
-        this.quantity = ProductValidationHandler.checkQuantity(quantity, context);
-        this.supplier = ProductValidationHandler.checkSupplier(supplier, context);
-        this.supplierPhone = ProductValidationHandler.checkPshone(supplierPhone, context);
+        this.quantity = ProductValidationHandler.quantityChecker(quantity, context);
+        this.supplier = ProductValidationHandler.supplierChecker(supplier, context);
+        this.supplierPhone = ProductValidationHandler.phoneChecker(supplierPhone, context);
     }
 
     public ContentValues getProductAsCValue() {
         ContentValues value = new ContentValues();
 
-        if (this.name == null)
-            return null;
-        else
+        if (this.name != null)
             value.put(ProductContract.ProductEntry.COLUMN_NAME, this.name);
+        else return null;
 
         if (this.price != null)
             value.put(ProductContract.ProductEntry.COLUMN_PRICE, this.price);
@@ -46,40 +34,15 @@ public class Product {
         if (this.quantity != null)
             value.put(ProductContract.ProductEntry.COLUMN_QUANTITY, this.quantity);
 
-        if (this.supplier == null)
-            return null;
-        else
+        if (this.supplier != null)
             value.put(ProductContract.ProductEntry.COLUMN_SUPPLIER_NAME, this.supplier);
+        else return null;
 
-        if (this.supplierPhone == null)
-            return null;
-        else
+        if (this.supplierPhone != null)
             value.put(ProductContract.ProductEntry.COLUMN_SUPPLIER_PHONE, this.supplierPhone);
+        else return null;
 
         return value;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public String getSupplier() {
-        return supplier;
-    }
-
-    public String getSupplierPhone() {
-        return supplierPhone;
-    }
 }

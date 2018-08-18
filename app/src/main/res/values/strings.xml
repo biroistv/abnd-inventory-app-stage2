@@ -23,4 +23,7 @@
     <string name="edit_success">Production edit is done</string>
     <string name="update_success">Update successful!</string>
     <string name="update_fail">Update failed!</string>
+    <string name="unsaved_dialog_msg">There are some unsaved thigns! Do you want to discard or continue to edit?</string>
+    <string name="discard_msg">Discard</string>
+    <string name="keep_editing_msg">Keep editing</string>
 </resources>

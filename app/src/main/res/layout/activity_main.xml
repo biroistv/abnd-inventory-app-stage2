@@ -33,6 +33,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        android:src="@drawable/round_add_white_24"/>
+        android:src="@drawable/baseline_add_white_24"/>
 
 </RelativeLayout>

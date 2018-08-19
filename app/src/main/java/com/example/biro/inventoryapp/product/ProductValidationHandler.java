@@ -8,9 +8,6 @@ import com.example.biro.inventoryapp.state.State;
 
 class ProductValidationHandler {
 
-    private static final int DEFAULT_PRICE = 99999999;
-    private static final int DEFAULT_QUANTITY = 0;
-
     private static State checkDataValidity(String str, String regex) {
         if (str.matches(regex))
             return State.VALID;
@@ -43,10 +40,11 @@ class ProductValidationHandler {
     }
 
     public static Integer numberChecker(@NonNull String str,
-                                     @NonNull Context context,
-                                     @NonNull String regex,
-                                     @NonNull String negativeMsg,
-                                     @NonNull String invalidMsg) {
+                                        @NonNull Context context,
+                                        @NonNull String regex,
+                                        @NonNull String negativeMsg,
+                                        @NonNull String invalidMsg,
+                                        @NonNull int defaultValue) {
         switch (checkDataValidity(str, regex)) {
             case VALID: {
                 Integer priceValue = Integer.parseInt(str);
@@ -62,7 +60,7 @@ class ProductValidationHandler {
                 return null;
             }
             case EMPTY: {
-                return DEFAULT_PRICE;
+                return defaultValue;
             }
             default:
                 throw new IllegalStateException("Illegal state error");

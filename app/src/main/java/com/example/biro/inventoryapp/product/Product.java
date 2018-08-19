@@ -7,6 +7,9 @@ import com.example.biro.inventoryapp.data.ProductContract;
 
 public class Product {
 
+    private static final int DEFAULT_PRICE = 99999999;
+    private static final int DEFAULT_QUANTITY = 0;
+
     private String name;
     private Integer price;
     private Integer quantity;
@@ -26,14 +29,16 @@ public class Product {
                 context,
                 "\\d+",
                 "Price cannot be negative!",
-                "Not a valid number!");
+                "Not a valid number!",
+                DEFAULT_PRICE);
 
         this.quantity = ProductValidationHandler.numberChecker(
                 quantity,
                 context,
                 "\\d+",
                 "Quantity cannot be negative!",
-                "Not a valid quantity!");
+                "Not a valid quantity!",
+                DEFAULT_QUANTITY);
 
         this.supplier = ProductValidationHandler.stringChecker(
                 supplier,
@@ -46,7 +51,7 @@ public class Product {
                 supplierPhone,
                 context,
                 "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}",
-                "Supllier must have a phone number!",
+                "Supplier must have a phone number!",
                 "Invalid phone number!");
     }
 

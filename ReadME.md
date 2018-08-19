@@ -1,6 +1,6 @@
 # ABND Inventory App - Stage 2
 
-Program leírása
+About the app...
 
 ## How To Use
 
@@ -10,7 +10,7 @@ Program leírása
 
 - **Overall Layout**
 
-- [x] The app conteins activities and/or fragments
+- [x] The app contains activities and/or fragments
 - [ ] Add inventory
 - [ ] See Product Details
 - [x] Edit Product Details
@@ -21,8 +21,8 @@ Program leírása
 - **List Item Layout in the Main Activity**
 
 - [x] Each list item displays the Product Name, Price and Quantity
-- [ ] Each list item contains a Sale `button` that redauce the total quantity of that particular product by one
-- [ ] Handling the negativ product quantity
+- [ ] Each list item contains a Sale `button` that reduce the total quantity of that particular product by one
+- [ ] Handling the negative product quantity
 
 - **Product Detail Layout**
 

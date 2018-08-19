@@ -1,5 +1,6 @@
 package com.example.biro.inventoryapp;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -29,15 +30,15 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @BindView(R.id.save_button)
     Button saveButton;
-    @BindView(R.id.name_edittext)
+    @BindView(R.id.name_editText)
     EditText nameEditText;
-    @BindView(R.id.price_edittext)
+    @BindView(R.id.price_editText)
     EditText priceEditText;
-    @BindView(R.id.quantity_edittext)
+    @BindView(R.id.quantity_editText)
     EditText quantityEditText;
-    @BindView(R.id.supp_name_edittext)
+    @BindView(R.id.supp_name_editText)
     EditText suppNameEditText;
-    @BindView(R.id.supp_phone_edittext)
+    @BindView(R.id.supp_phone_editText)
     EditText suppPhoneEditText;
 
     private boolean productHasChanged = false;
@@ -54,6 +55,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
             ProductContract.ProductEntry.COLUMN_SUPPLIER_PHONE
     };
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +64,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         // Binding the views with the butterKnife
         ButterKnife.bind(this);
 
-        // Setting up the tuch listener on each editTextView
+        // Setting up the touch listener on each editTextView
         nameEditText.setOnTouchListener(touchListener);
         priceEditText.setOnTouchListener(touchListener);
         quantityEditText.setOnTouchListener(touchListener);
@@ -92,7 +94,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
                     );
 
                     if (saveSuccess) {
-                        Toast.makeText(EditActivity.this, R.string.successfull_product_saving, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditActivity.this, R.string.successful_product_saving, Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 } else {
@@ -165,7 +167,8 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
                 suppPhoneEditText.getText().toString());
     }
 
-    private View.OnTouchListener touchListener = new View.OnTouchListener() {
+    private final View.OnTouchListener touchListener = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             productHasChanged = true;

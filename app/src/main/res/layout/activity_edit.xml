@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,12 +19,13 @@
         <TextView
             android:layout_weight="0.7"
             android:layout_height="wrap_content"
-            android:text="Product name"
+            android:text="@string/product_name"
             android:layout_width="match_parent" />
 
         <EditText
+            android:hint="@string/hint_name"
             android:inputType="textPersonName"
-            android:id="@+id/name_edittext"
+            android:id="@+id/name_editText"
             android:layout_weight="0.3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -43,13 +42,14 @@
         <TextView
             android:layout_weight="0.7"
             android:layout_height="wrap_content"
-            android:text="Product price"
+            android:text="@string/product_price"
             android:layout_width="match_parent" />
 
         <EditText
-            android:text="0"
+            android:hint="@string/hint_price"
+            android:text="@string/_0"
             android:inputType="numberDecimal"
-            android:id="@+id/price_edittext"
+            android:id="@+id/price_editText"
             android:layout_weight="0.3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -66,13 +66,14 @@
         <TextView
             android:layout_weight="0.7"
             android:layout_height="wrap_content"
-            android:text="Quantity"
+            android:text="@string/quantity"
             android:layout_width="match_parent" />
 
         <EditText
-            android:text="0"
+            android:hint="@string/hint_quantity"
+            android:text="@string/_0"
             android:inputType="numberDecimal"
-            android:id="@+id/quantity_edittext"
+            android:id="@+id/quantity_editText"
             android:layout_weight="0.3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -89,12 +90,13 @@
         <TextView
             android:layout_weight="0.7"
             android:layout_height="wrap_content"
-            android:text="Supplier name"
+            android:text="@string/supplier_name"
             android:layout_width="match_parent" />
 
         <EditText
+            android:hint="@string/hint_supplier"
             android:inputType="textPersonName"
-            android:id="@+id/supp_name_edittext"
+            android:id="@+id/supp_name_editText"
             android:layout_weight="0.3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -111,12 +113,13 @@
         <TextView
             android:layout_weight="0.7"
             android:layout_height="wrap_content"
-            android:text="Supplier phone"
+            android:text="@string/supplier_phone"
             android:layout_width="match_parent" />
 
         <EditText
+            android:hint="@string/hint_phone"
             android:inputType="phone"
-            android:id="@+id/supp_phone_edittext"
+            android:id="@+id/supp_phone_editText"
             android:layout_weight="0.3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

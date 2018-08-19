@@ -10,11 +10,11 @@ public class Product {
     private static final int DEFAULT_PRICE = 99999999;
     private static final int DEFAULT_QUANTITY = 0;
 
-    private String name;
-    private Integer price;
-    private Integer quantity;
-    private String supplier;
-    private String supplierPhone;
+    private final String name;
+    private final Integer price;
+    private final Integer quantity;
+    private final String supplier;
+    private final String supplierPhone;
 
     public Product(Context context,
                    String name,

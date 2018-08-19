@@ -16,7 +16,12 @@ public class Product {
     private String supplier;
     private String supplierPhone;
 
-    public Product(Context context, String name, String price, String quantity, String supplier, String supplierPhone) {
+    public Product(Context context,
+                   String name,
+                   String price,
+                   String quantity,
+                   String supplier,
+                   String supplierPhone) {
         this.name = ProductValidationHandler.stringChecker(
                 name,
                 context,

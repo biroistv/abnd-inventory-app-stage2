@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.widget.Toast;
 
 import com.example.biro.inventoryapp.R;
-import com.example.biro.inventoryapp.data.ProductContract;
 import com.example.biro.inventoryapp.product.Product;
 
 /**
@@ -20,7 +19,7 @@ public class DatabaseHandler {
                 "Car",
                 "10000",
                 "3",
-                "Anonim",
+                "Test",
                 "1234567890"
         );
 
@@ -47,17 +46,12 @@ public class DatabaseHandler {
         if (values == null)
             return false;
 
-        Uri newUri = null;
-        if (values != null)
-            newUri = context.getContentResolver().insert(
-                    ProductContract.ProductEntry.CONTENT_URI,
-                    values
-            );
+        Uri newUri = context.getContentResolver().insert(
+                ProductContract.ProductEntry.CONTENT_URI,
+                values
+        );
 
-        if (newUri == null)
-            return false;
-
-        return true;
+        return newUri != null;
     }
 
 
@@ -75,11 +69,7 @@ public class DatabaseHandler {
                 selectionArgs
         );
 
-        if (rowEffected != 0)
-            return true;
-        else
-            return false;
-
+        return rowEffected != 0;
     }
 
 

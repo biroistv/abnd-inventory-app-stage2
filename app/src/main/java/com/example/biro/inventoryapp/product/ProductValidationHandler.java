@@ -44,7 +44,7 @@ class ProductValidationHandler {
                                         @NonNull String regex,
                                         @NonNull String negativeMsg,
                                         @NonNull String invalidMsg,
-                                        @NonNull int defaultValue) {
+                                        int defaultValue) {
         switch (checkDataValidity(str, regex)) {
             case VALID: {
                 Integer priceValue = Integer.parseInt(str);

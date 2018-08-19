@@ -3,6 +3,7 @@ package com.example.biro.inventoryapp.data;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -78,12 +79,14 @@ public class ProductProvider extends ContentProvider {
                 break;
             }
             default: {
-                throw new IllegalArgumentException("Cannot qiery unknown URI " + uri);
+                throw new IllegalArgumentException("Cannot query unknown URI " + uri);
                 // error handling
             }
         }
 
-        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        Context context = getContext();
+        assert context != null;
+        cursor.setNotificationUri(context.getContentResolver(), uri);
 
         return cursor;
     }
@@ -132,7 +135,9 @@ public class ProductProvider extends ContentProvider {
             return null;
         }
 
-        getContext().getContentResolver().notifyChange(uri, null);
+        Context context = getContext();
+        assert context != null;
+        context.getContentResolver().notifyChange(uri, null);
 
         return ContentUris.withAppendedId(uri, id);
     }
@@ -145,8 +150,12 @@ public class ProductProvider extends ContentProvider {
         switch (match) {
             case PRODUCTS: {
                 int rowsDeleted = db.delete(ProductContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
-                if (rowsDeleted != 0)
-                    getContext().getContentResolver().notifyChange(uri, null);
+                if (rowsDeleted != 0) {
+                    Context context = getContext();
+                    assert context != null;
+                    context.getContentResolver().notifyChange(uri, null);
+                }
+
                 return rowsDeleted;
             }
             case PRODUCT_ID: {
@@ -155,8 +164,11 @@ public class ProductProvider extends ContentProvider {
 
                 int rowDeleted = db.delete(ProductContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
 
-                if (rowDeleted != 0)
-                    getContext().getContentResolver().notifyChange(uri, null);
+                if (rowDeleted != 0) {
+                    Context context = getContext();
+                    assert context != null;
+                    context.getContentResolver().notifyChange(uri, null);
+                }
 
                 return rowDeleted;
             }
@@ -175,8 +187,11 @@ public class ProductProvider extends ContentProvider {
 
                 int rowsUpdated = UpdateData(values, selection, selectionArgs);
 
-                if (rowsUpdated != 0)
-                    getContext().getContentResolver().notifyChange(uri, null);
+                if (rowsUpdated != 0) {
+                    Context context = getContext();
+                    assert context != null;
+                    context.getContentResolver().notifyChange(uri, null);
+                }
 
                 return rowsUpdated;
             }
@@ -187,8 +202,11 @@ public class ProductProvider extends ContentProvider {
 
                 int rowUpdated = UpdateData(values, selection, selectionArgs);
 
-                if (rowUpdated != 0)
-                    getContext().getContentResolver().notifyChange(uri, null);
+                if (rowUpdated != 0) {
+                    Context context = getContext();
+                    assert context != null;
+                    context.getContentResolver().notifyChange(uri, null);
+                }
 
                 return rowUpdated;
             }

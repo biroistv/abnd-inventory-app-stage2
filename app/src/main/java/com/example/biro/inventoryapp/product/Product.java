@@ -2,6 +2,7 @@ package com.example.biro.inventoryapp.product;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.widget.Toast;
 
 import com.example.biro.inventoryapp.data.ProductContract;
 
@@ -10,11 +11,12 @@ public class Product {
     private static final int DEFAULT_PRICE = 99999999;
     private static final int DEFAULT_QUANTITY = 0;
 
-    private final String name;
-    private final Integer price;
-    private final Integer quantity;
-    private final String supplier;
-    private final String supplierPhone;
+    private String name;
+    private Integer price;
+    private Integer quantity;
+    private String supplier;
+    private String supplierPhone;
+    private Context context;
 
     public Product(Context context,
                    String name,
@@ -22,6 +24,9 @@ public class Product {
                    String quantity,
                    String supplier,
                    String supplierPhone) {
+
+        this.context = context;
+
         this.name = ProductValidationHandler.stringChecker(
                 name,
                 context,
@@ -82,6 +87,16 @@ public class Product {
         else return null;
 
         return value;
+    }
+
+    public void increaseProductQuantity(){ this.quantity++; }
+    public void decreaseProductQuantity(){
+        this.quantity--;
+
+        if (this.quantity < 0){
+            this.quantity = 0;
+            Toast.makeText(this.context, "You can't decrease it more!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

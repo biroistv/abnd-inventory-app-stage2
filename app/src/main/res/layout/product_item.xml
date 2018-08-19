@@ -94,7 +94,7 @@
                             android:layout_height="33dp"
                             android:text="@string/sell"
                             android:textSize="11sp"
-                            tools:ignore="SmallSp" />
+                            tools:ignore="SmallSp"/>
 
                     </LinearLayout>
 

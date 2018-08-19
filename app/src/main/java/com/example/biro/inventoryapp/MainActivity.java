@@ -17,22 +17,25 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.biro.inventoryapp.adapter.ProductCursorAdapter;
-import com.example.biro.inventoryapp.data.ProductContract;
 import com.example.biro.inventoryapp.data.DatabaseHandler;
+import com.example.biro.inventoryapp.data.ProductContract;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    @BindView(R.id.floating_action_button) FloatingActionButton floatingButton;
-    @BindView(R.id.main_list_view) ListView productListView;
-    @BindView(R.id.empty_view) View emptyView;
+    @BindView(R.id.floating_action_button)
+    FloatingActionButton floatingButton;
+    @BindView(R.id.main_list_view)
+    ListView productListView;
+    @BindView(R.id.empty_view)
+    View emptyView;
 
     private static final int PRODUCT_LOADER = 0;
     private ProductCursorAdapter mCursorAdapter;
 
-    private static final String[] PROJECTION = new String[] {
+    private static final String[] PROJECTION = new String[]{
             ProductContract.ProductEntry._ID,
             ProductContract.ProductEntry.COLUMN_NAME,
             ProductContract.ProductEntry.COLUMN_PRICE,
@@ -62,10 +65,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
                 Uri currentProductUri = ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, id);
-
                 intent.setData(currentProductUri);
                 startActivity(intent);
             }
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -83,17 +86,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.add_dummy_data: {
-                DatabaseHandler.insertDummyData( this);
+                DatabaseHandler.insertDummyData(this);
                 return true;
             }
             case R.id.product_delete: {
                 return true;
             }
             case R.id.product_edit: {
-                Intent intent = new Intent(this, EditActivity.class);
-                startActivity(intent);
                 return true;
             }
             case R.id.delete_all_product: {

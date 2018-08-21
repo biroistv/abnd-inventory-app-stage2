@@ -2,6 +2,7 @@ package com.example.biro.inventoryapp;
 
 import android.app.LoaderManager;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,8 +68,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
-                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+
+                // TODO: Nem elfelejteni itt az editactivityt is kezelni
+                Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                 Uri currentProductUri = ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, id);
+
+                Log.d("DetailsOnclick", "onItemClick: " + currentProductUri);
                 intent.setData(currentProductUri);
                 startActivity(intent);
             }
@@ -75,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

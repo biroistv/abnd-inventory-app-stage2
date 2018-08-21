@@ -28,4 +28,6 @@
     <string name="hint_quantity">e.g. 10</string>
     <string name="hint_price">e.g. 10</string>
     <string name="hint_name">e.g. Car</string>
+    <string name="details">Details</string>
+    <string name="edit">Edit</string>
 </resources>

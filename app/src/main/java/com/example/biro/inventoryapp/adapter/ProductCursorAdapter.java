@@ -1,17 +1,25 @@
 package com.example.biro.inventoryapp.adapter;
 
+import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.biro.inventoryapp.EditActivity;
 import com.example.biro.inventoryapp.R;
 import com.example.biro.inventoryapp.data.DatabaseHandler;
+import com.example.biro.inventoryapp.data.ProductContract;
 import com.example.biro.inventoryapp.product.Product;
 
 import butterknife.BindView;
@@ -21,8 +29,11 @@ import static com.example.biro.inventoryapp.data.ProductContract.ProductEntry;
 
 public class ProductCursorAdapter extends CursorAdapter {
 
+    private Context mainActivityContext;
+
     public ProductCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
+        this.mainActivityContext = context;
     }
 
     @Override
@@ -37,7 +48,7 @@ public class ProductCursorAdapter extends CursorAdapter {
     public void bindView(View view, final Context context, final Cursor cursor) {
         final ViewHolder viewHolder = (ViewHolder) view.getTag();
 
-        viewHolder.sellBtn.setTag(cursor.getPosition());
+        viewHolder.product_edit_btn.setTag(cursor.getPosition() + 1);
 
         int productNameIndex = cursor.getColumnIndex(ProductEntry.COLUMN_NAME);
         int productPriceIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRICE);
@@ -72,9 +83,30 @@ public class ProductCursorAdapter extends CursorAdapter {
                         context,
                         ProductEntry.CONTENT_URI,
                         product,
-                        "_id='" + productID +"'",
+                        ProductEntry._ID + "='" + productID +"'",
                         null
                 );
+
+                if (updateSuccess)
+                    Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewHolder.product_edit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mainActivityContext, EditActivity.class);
+
+                int pos = (int)viewHolder.product_edit_btn.getTag();
+
+                Log.d("EditOnclick", "onClick: product edit button position = " +pos );
+
+                Uri currentProductUri = ContentUris.withAppendedId(
+                        ProductContract.ProductEntry.CONTENT_URI,
+                        Integer.parseInt(productID));
+
+                intent.setData(currentProductUri);
+                mainActivityContext.startActivity(intent);
             }
         });
 
@@ -94,6 +126,8 @@ public class ProductCursorAdapter extends CursorAdapter {
         Button sellBtn;
         @BindView(R.id.product_card)
         CardView productCard;
+        @BindView(R.id.edit_img_btn)
+        ImageButton product_edit_btn;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -74,6 +75,8 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         Intent intent = getIntent();
         mCurrentProductUri = intent.getData();
 
+        Log.d("EditOnclick", "onCreate: mcurrentProductUru = " + mCurrentProductUri);
+
         if (mCurrentProductUri == null)
             setTitle(getString(R.string.add_product));
         else {
@@ -130,8 +133,10 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        if (data == null || data.getCount() < 1)
+        if (data == null || data.getCount() < 1){
+            Log.d("EditOnclick", "onLoadFinished: data count is " + data.getCount());
             return;
+        }
 
         if (data.moveToFirst()) {
             String name = data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_NAME));
@@ -151,8 +156,8 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         nameEditText.setText("");
-        priceEditText.setText("0");
-        quantityEditText.setText("0");
+        priceEditText.setText("");
+        quantityEditText.setText("");
         suppNameEditText.setText("");
         suppPhoneEditText.setText("");
     }

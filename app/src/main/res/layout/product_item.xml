@@ -91,10 +91,16 @@
                             android:gravity="center"
                             android:id="@+id/product_sell_btn"
                             android:layout_width="wrap_content"
-                            android:layout_height="33dp"
+                            android:layout_height="43dp"
                             android:text="@string/sell"
                             android:textSize="11sp"
                             tools:ignore="SmallSp"/>
+
+                        <ImageButton
+                            android:id="@+id/edit_img_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/baseline_edit_black_24"/>
 
                     </LinearLayout>
 

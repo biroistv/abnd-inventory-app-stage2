@@ -1,16 +1,20 @@
 package com.example.biro.inventoryapp;
 
+import android.Manifest;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.biro.inventoryapp.data.DatabaseHandler;
 import com.example.biro.inventoryapp.data.ProductContract;
@@ -62,16 +66,16 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         increaseImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (product != null)
+                if (product != null) {
                     product.increaseProductQuantity();
-
-                boolean increaseSuccess = DatabaseHandler.updateData(
-                        DetailsActivity.this,
-                        mCurrentProductUri,
-                        product,
-                        null,
-                        null
-                );
+                    boolean increaseSuccess = DatabaseHandler.updateData(
+                            DetailsActivity.this,
+                            mCurrentProductUri,
+                            product,
+                            null,
+                            null
+                    );
+                }
             }
         });
 
@@ -79,16 +83,45 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onClick(View v) {
 
-                if (product != null)
+                if (product != null) {
                     product.decreaseProductQuantity();
+                    boolean decreaseSuccess = DatabaseHandler.updateData(
+                            DetailsActivity.this,
+                            mCurrentProductUri,
+                            product,
+                            null,
+                            null
+                    );
+                }
+            }
+        });
 
-                boolean decreaseSuccess = DatabaseHandler.updateData(
-                        DetailsActivity.this,
-                        mCurrentProductUri,
-                        product,
-                        null,
-                        null
-                );
+        deleteImgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // TODO: párbeszéd ablak nyitása, hogy biztos törölni akarja e a cuccot
+
+                if (product != null) {
+                    boolean deleteSuccess = DatabaseHandler.deleteData(
+                            DetailsActivity.this,
+                            mCurrentProductUri
+                    );
+
+                    Toast.makeText(DetailsActivity.this, "Product deleted", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
+
+        callImgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + product.getSupplierPhone()));
+                if (ActivityCompat.checkSelfPermission(DetailsActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
+                    return;
+
+                (DetailsActivity.this).startActivity(callIntent);
             }
         });
     }
@@ -126,11 +159,14 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                     phone
             );
 
-            productNameTV.setText(": " + name);
-            productPriceTV.setText(": " + price);
-            productQuantityTV.setText(" " + quantity);
-            productSupplierTV.setText(": " + supplier);
-            productPhoneTV.setText(": " + phone);
+            String colon = getString(R.string.colon_sign);
+            String dollar = getString(R.string.dollar_sign);
+
+            productNameTV.setText(colon + name);
+            productPriceTV.setText(colon + price + dollar);
+            productQuantityTV.setText(colon + quantity);
+            productSupplierTV.setText(colon + supplier);
+            productPhoneTV.setText(colon + phone);
         }
     }
 

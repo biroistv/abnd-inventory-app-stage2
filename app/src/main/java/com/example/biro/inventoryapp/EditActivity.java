@@ -75,7 +75,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         Intent intent = getIntent();
         mCurrentProductUri = intent.getData();
 
-        Log.d("EditOnclick", "onCreate: mcurrentProductUru = " + mCurrentProductUri);
+        Log.d("EditOnclick", "onCreate: mCurrentProductUru = " + mCurrentProductUri);
 
         if (mCurrentProductUri == null)
             setTitle(getString(R.string.add_product));
@@ -133,10 +133,8 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        if (data == null || data.getCount() < 1){
-            Log.d("EditOnclick", "onLoadFinished: data count is " + data.getCount());
+        if (data == null || data.getCount() < 1)
             return;
-        }
 
         if (data.moveToFirst()) {
             String name = data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_NAME));

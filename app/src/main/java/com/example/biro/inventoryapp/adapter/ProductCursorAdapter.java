@@ -111,8 +111,9 @@ public class ProductCursorAdapter extends CursorAdapter {
         });
 
         viewHolder.nameTextView.setText(productName);
-        viewHolder.priceTextView.setText(productPrice);
-        viewHolder.quantityTextView.setText(productQuantity);
+        CharSequence productPriceText = productPrice + context.getString(R.string.dollar_sign);
+        viewHolder.priceTextView.setText(productPriceText);
+        viewHolder.quantityTextView.setText(context.getText(R.string.colon_sign) + productQuantity);
     }
 
     static class ViewHolder {

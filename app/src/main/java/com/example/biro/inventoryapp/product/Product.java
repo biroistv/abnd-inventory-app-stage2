@@ -18,6 +18,10 @@ public class Product {
     private String supplierPhone;
     private Context context;
 
+    public String getSupplierPhone() {
+        return supplierPhone;
+    }
+
     public Product(Context context,
                    String name,
                    String price,
@@ -30,14 +34,14 @@ public class Product {
         this.name = ProductValidationHandler.stringChecker(
                 name,
                 context,
-                "[a-zA-Z0-9]+",
+                "^[a-zA-Z0-9\\s]+",
                 "Name field cannot be empty!",
                 "Not a valid name!");
 
         this.price = ProductValidationHandler.numberChecker(
                 price,
                 context,
-                "\\d+",
+                "^\\d+",
                 "Price cannot be negative!",
                 "Not a valid number!",
                 DEFAULT_PRICE);
@@ -45,7 +49,7 @@ public class Product {
         this.quantity = ProductValidationHandler.numberChecker(
                 quantity,
                 context,
-                "\\d+",
+                "^\\d+",
                 "Quantity cannot be negative!",
                 "Not a valid quantity!",
                 DEFAULT_QUANTITY);
@@ -53,14 +57,14 @@ public class Product {
         this.supplier = ProductValidationHandler.stringChecker(
                 supplier,
                 context,
-                "[a-zA-Z]+",
+                "^[a-zA-Z\\s]+",
                 "Supplier must have a name!",
                 "Invalid supplier name!");
 
         this.supplierPhone = ProductValidationHandler.stringChecker(
                 supplierPhone,
                 context,
-                "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}",
+                "^\\d{8,12}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}",
                 "Supplier must have a phone number!",
                 "Invalid phone number!");
     }

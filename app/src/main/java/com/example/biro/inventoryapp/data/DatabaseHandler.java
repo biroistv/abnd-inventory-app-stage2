@@ -54,7 +54,6 @@ public class DatabaseHandler {
         return newUri != null;
     }
 
-
     public static boolean updateData(Context context, Uri currentProductUri, Product product, String selection, String[] selectionArgs) {
 
         ContentValues values = product.getProductAsCValue();
@@ -72,6 +71,20 @@ public class DatabaseHandler {
         return rowEffected != 0;
     }
 
+    public static boolean deleteData(Context context, Uri currentProductUri){
+
+        int rowDeleted = 0;
+
+        if (currentProductUri != null){
+            context.getContentResolver().delete(
+                    currentProductUri,
+                    null,
+                    null
+            );
+        }
+
+        return rowDeleted != 0;
+    }
 
     public static void clearProductTable(Context context) {
         int rowEffected = context.getContentResolver().delete(

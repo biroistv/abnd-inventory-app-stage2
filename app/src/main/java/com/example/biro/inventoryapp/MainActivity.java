@@ -2,7 +2,6 @@ package com.example.biro.inventoryapp;
 
 import android.app.LoaderManager;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -68,12 +67,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
-
-                // TODO: Nem elfelejteni itt az editactivityt is kezelni
                 Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                 Uri currentProductUri = ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, id);
-
-                Log.d("DetailsOnclick", "onItemClick: " + currentProductUri);
                 intent.setData(currentProductUri);
                 startActivity(intent);
             }
@@ -94,12 +89,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         switch (item.getItemId()) {
             case R.id.add_dummy_data: {
                 DatabaseHandler.insertDummyData(this);
-                return true;
-            }
-            case R.id.product_delete: {
-                return true;
-            }
-            case R.id.product_edit: {
                 return true;
             }
             case R.id.delete_all_product: {

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.example.biro.inventoryapp.R;
 import com.example.biro.inventoryapp.data.ProductContract;
 
 public class Product {
@@ -11,12 +12,12 @@ public class Product {
     private static final int DEFAULT_PRICE = 99999999;
     private static final int DEFAULT_QUANTITY = 0;
 
-    private String name;
-    private Integer price;
+    private final String name;
+    private final Integer price;
     private Integer quantity;
-    private String supplier;
-    private String supplierPhone;
-    private Context context;
+    private final String supplier;
+    private final String supplierPhone;
+    private final Context context;
 
     public String getSupplierPhone() {
         return supplierPhone;
@@ -64,7 +65,7 @@ public class Product {
         this.supplierPhone = ProductValidationHandler.stringChecker(
                 supplierPhone,
                 context,
-                "^\\d{8,12}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}",
+                "^\\d{8,12}",
                 "Supplier must have a phone number!",
                 "Invalid phone number!");
     }
@@ -93,14 +94,12 @@ public class Product {
         return value;
     }
 
-    public void increaseProductQuantity(){ this.quantity++; }
-    public void decreaseProductQuantity(){
-        this.quantity--;
-
-        if (this.quantity < 0){
-            this.quantity = 0;
-            Toast.makeText(this.context, "You can't decrease it more!", Toast.LENGTH_SHORT).show();
-        }
+    public void increaseProductQuantity(int value){ this.quantity += value; }
+    public void decreaseProductQuantity(int value){
+        if (this.quantity - value < 0){
+            Toast.makeText(this.context, context.getString(R.string.you_cant_delete_x_product, value), Toast.LENGTH_SHORT).show();
+        } else
+            this.quantity -= value;
     }
 
 }

@@ -71,12 +71,11 @@ public class DatabaseHandler {
         return rowEffected != 0;
     }
 
-    public static boolean deleteData(Context context, Uri currentProductUri){
-
+    public static Boolean deleteData(Context context, Uri currentProductUri){
         int rowDeleted = 0;
 
         if (currentProductUri != null){
-            context.getContentResolver().delete(
+            rowDeleted = context.getContentResolver().delete(
                     currentProductUri,
                     null,
                     null

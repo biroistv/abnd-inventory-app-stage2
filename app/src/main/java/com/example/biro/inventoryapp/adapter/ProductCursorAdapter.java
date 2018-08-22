@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.biro.inventoryapp.EditActivity;
 import com.example.biro.inventoryapp.R;
@@ -29,7 +27,7 @@ import static com.example.biro.inventoryapp.data.ProductContract.ProductEntry;
 
 public class ProductCursorAdapter extends CursorAdapter {
 
-    private Context mainActivityContext;
+    private final Context mainActivityContext;
 
     public ProductCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
@@ -77,18 +75,15 @@ public class ProductCursorAdapter extends CursorAdapter {
                         productPhone
                 );
 
-                product.decreaseProductQuantity();
+                product.decreaseProductQuantity(1);
 
-                boolean updateSuccess = DatabaseHandler.updateData(
+                DatabaseHandler.updateData(
                         context,
                         ProductEntry.CONTENT_URI,
                         product,
                         ProductEntry._ID + "='" + productID +"'",
                         null
                 );
-
-                if (updateSuccess)
-                    Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -96,10 +91,6 @@ public class ProductCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mainActivityContext, EditActivity.class);
-
-                int pos = (int)viewHolder.product_edit_btn.getTag();
-
-                Log.d("EditOnclick", "onClick: product edit button position = " +pos );
 
                 Uri currentProductUri = ContentUris.withAppendedId(
                         ProductContract.ProductEntry.CONTENT_URI,
@@ -113,7 +104,8 @@ public class ProductCursorAdapter extends CursorAdapter {
         viewHolder.nameTextView.setText(productName);
         CharSequence productPriceText = productPrice + context.getString(R.string.dollar_sign);
         viewHolder.priceTextView.setText(productPriceText);
-        viewHolder.quantityTextView.setText(context.getText(R.string.colon_sign) + productQuantity);
+        CharSequence productQuantityText = context.getText(R.string.colon_sign) + productQuantity;
+        viewHolder.quantityTextView.setText(productQuantityText);
     }
 
     static class ViewHolder {

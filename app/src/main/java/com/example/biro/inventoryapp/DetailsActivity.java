@@ -1,17 +1,21 @@
 package com.example.biro.inventoryapp;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,9 +23,12 @@ import android.widget.Toast;
 import com.example.biro.inventoryapp.data.DatabaseHandler;
 import com.example.biro.inventoryapp.data.ProductContract;
 import com.example.biro.inventoryapp.product.Product;
+import com.example.biro.inventoryapp.state.Operation;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.text.InputType.TYPE_CLASS_NUMBER;
 
 public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -66,32 +73,16 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         increaseImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (product != null) {
-                    product.increaseProductQuantity();
-                    boolean increaseSuccess = DatabaseHandler.updateData(
-                            DetailsActivity.this,
-                            mCurrentProductUri,
-                            product,
-                            null,
-                            null
-                    );
-                }
+                if (product != null)
+                    quantityAlertDialog(product, "Increase product", Operation.INCREASE);
             }
         });
 
         decreaseImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (product != null) {
-                    product.decreaseProductQuantity();
-                    boolean decreaseSuccess = DatabaseHandler.updateData(
-                            DetailsActivity.this,
-                            mCurrentProductUri,
-                            product,
-                            null,
-                            null
-                    );
+                    quantityAlertDialog(product, "Decrease product", Operation.DECREASE);
                 }
             }
         });
@@ -99,17 +90,37 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         deleteImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // TODO: párbeszéd ablak nyitása, hogy biztos törölni akarja e a cuccot
-
                 if (product != null) {
-                    boolean deleteSuccess = DatabaseHandler.deleteData(
-                            DetailsActivity.this,
-                            mCurrentProductUri
-                    );
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            DetailsActivity.this);
 
-                    Toast.makeText(DetailsActivity.this, "Product deleted", Toast.LENGTH_SHORT).show();
-                    finish();
+                    alertDialogBuilder.setTitle(R.string.delete);
+
+                    alertDialogBuilder
+                            .setMessage(R.string.delete_question)
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.yes_, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    boolean deleteSuccess = DatabaseHandler.deleteData(
+                                                    DetailsActivity.this,
+                                                    mCurrentProductUri);
+
+                                    if (deleteSuccess) {
+                                        Toast.makeText(DetailsActivity.this, R.string.product_deleted, Toast.LENGTH_SHORT).show();
+                                        (DetailsActivity.this).finish();
+                                    } else {
+                                        dialog.cancel();
+                                    }
+                                }
+                            })
+                            .setNegativeButton(R.string.no__, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 }
             }
         });
@@ -159,14 +170,11 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                     phone
             );
 
-            String colon = getString(R.string.colon_sign);
-            String dollar = getString(R.string.dollar_sign);
-
-            productNameTV.setText(colon + name);
-            productPriceTV.setText(colon + price + dollar);
-            productQuantityTV.setText(colon + quantity);
-            productSupplierTV.setText(colon + supplier);
-            productPhoneTV.setText(colon + phone);
+            productNameTV.setText(getString(R.string.colon_plus_text, name));
+            productPriceTV.setText(getString(R.string.colon_price_dollar, price));
+            productQuantityTV.setText(getString(R.string.colon_plus_text, quantity));
+            productSupplierTV.setText(getString(R.string.colon_plus_text, supplier));
+            productPhoneTV.setText(getString(R.string.colon_plus_text, phone));
         }
     }
 
@@ -177,5 +185,62 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         productQuantityTV.setText("");
         productSupplierTV.setText("");
         productPhoneTV.setText("");
+    }
+
+    private void quantityAlertDialog(final Product prod,
+                                     @NonNull final String title,
+                                     @NonNull final Operation operation){
+        if (prod != null) {
+            final EditText input = new EditText(DetailsActivity.this);
+            input.setInputType(TYPE_CLASS_NUMBER);
+            input.setText("1");
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DetailsActivity.this);
+
+            alertDialogBuilder
+                    .setTitle(title)
+                    .setCancelable(false)
+                    .setView(input)
+                    .setPositiveButton(R.string.ok_text, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            String strValue = input.getText().toString();
+
+                            int value = 1;
+                            if (!strValue.isEmpty())
+                                value = Integer.parseInt(input.getText().toString());
+
+                            switch (operation){
+                                case DECREASE: {
+                                    prod.decreaseProductQuantity(value);
+                                    break;
+                                }
+                                case INCREASE: {
+                                    prod.increaseProductQuantity(value);
+                                    break;
+                                }
+                                default: throw new IllegalArgumentException("Unknown operation");
+                            }
+
+                            DatabaseHandler.updateData(
+                                    DetailsActivity.this,
+                                    mCurrentProductUri,
+                                    prod,
+                                    null,
+                                    null
+                            );
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel_text, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
     }
 }

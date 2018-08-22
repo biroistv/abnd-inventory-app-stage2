@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.biro.inventoryapp.EditActivity;
 import com.example.biro.inventoryapp.R;
@@ -75,13 +76,18 @@ public class ProductCursorAdapter extends CursorAdapter {
                         productPhone
                 );
 
-                product.decreaseProductQuantity(1);
+                boolean decreaseSuccess = product.decreaseProductQuantity(1);
+
+                if (!decreaseSuccess){
+                    Toast.makeText(context, context.getString(R.string.you_cant_delete_x_product, 1), Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 DatabaseHandler.updateData(
                         context,
                         ProductEntry.CONTENT_URI,
                         product,
-                        ProductEntry._ID + "='" + productID +"'",
+                        ProductEntry._ID + "='" + productID + "'",
                         null
                 );
             }

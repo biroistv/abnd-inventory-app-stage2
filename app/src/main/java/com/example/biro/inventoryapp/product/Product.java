@@ -2,10 +2,16 @@ package com.example.biro.inventoryapp.product;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.widget.Toast;
 
-import com.example.biro.inventoryapp.R;
 import com.example.biro.inventoryapp.data.ProductContract;
+
+/**
+ *  This class do the validation of a product.
+ *
+ *  - checking a data
+ *  - getting as a ContentValue
+ *  - increase/decrease the product
+ * */
 
 public class Product {
 
@@ -17,20 +23,21 @@ public class Product {
     private Integer quantity;
     private final String supplier;
     private final String supplierPhone;
-    private final Context context;
 
     public String getSupplierPhone() {
         return supplierPhone;
     }
 
+    /**
+     * The Constructor is validating the input data and if its valid then
+     * define the member variables with that valid data.
+     * */
     public Product(Context context,
                    String name,
                    String price,
                    String quantity,
                    String supplier,
                    String supplierPhone) {
-
-        this.context = context;
 
         this.name = ProductValidationHandler.stringChecker(
                 name,
@@ -70,6 +77,14 @@ public class Product {
                 "Invalid phone number!");
     }
 
+    /**
+     * Returns a ContentValue that can we use in the database handling
+     * methods.
+     * <p>
+     * This method returns null, if any of the string data is null.
+     *
+     * @return      a ContentValue which contains the product information
+     */
     public ContentValues getProductAsCValue() {
         ContentValues value = new ContentValues();
 
@@ -94,12 +109,27 @@ public class Product {
         return value;
     }
 
+    /**
+     * Increase the number of quantity based on the input parameter.
+     * @param value     the number of product
+     */
     public void increaseProductQuantity(int value){ this.quantity += value; }
-    public void decreaseProductQuantity(int value){
-        if (this.quantity - value < 0){
-            Toast.makeText(this.context, context.getString(R.string.you_cant_delete_x_product, value), Toast.LENGTH_SHORT).show();
-        } else
+
+    /**
+     * Decrease the number of quantity based on the input parameter.
+     * <p>
+     * Decrease the quantity ONLY if the subtraction of the input parameter and the current quantity is
+     * greater or equal to 0. Otherwise return false, what means the decrease is not possible.
+     * @param value     the number of product
+     * @return          boolean value depend on the operation output
+     */
+    public boolean decreaseProductQuantity(int value){
+        if (this.quantity - value >= 0){
             this.quantity -= value;
+            return true;
+        }
+
+        return false;
     }
 
 }

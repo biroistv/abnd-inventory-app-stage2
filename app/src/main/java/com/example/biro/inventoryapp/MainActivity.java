@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         productListView.setEmptyView(emptyView);
         productListView.setAdapter(mCursorAdapter);
 
+        // Setting up listeners on each item in the listView
+        // This navigate as to the Details Layout
         productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {

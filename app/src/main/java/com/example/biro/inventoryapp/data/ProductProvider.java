@@ -10,13 +10,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
-
-import static android.content.ContentValues.TAG;
 
 public class ProductProvider extends ContentProvider {
 
-
+    // Uri type
     private static final int PRODUCTS = 1;
     private static final int PRODUCT_ID = 10;
 
@@ -75,12 +72,10 @@ public class ProductProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
-                // Do something on a row
                 break;
             }
             default: {
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
-                // error handling
             }
         }
 
@@ -130,10 +125,8 @@ public class ProductProvider extends ContentProvider {
                 values
         );
 
-        if (id == -1) {
-            Log.d(TAG, "insertProduct: Failed -> " + uri);
+        if (id == -1)
             return null;
-        }
 
         Context context = getContext();
         assert context != null;
@@ -179,7 +172,6 @@ public class ProductProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PRODUCTS: {

@@ -89,7 +89,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onClick(View v) {
 
                 Product product = getProductFromEditTexts();
-
+                // If the uri is null then its a new item adding
                 if (mCurrentProductUri == null) {
                     boolean saveSuccess = DatabaseHandler.insertData(
                             EditActivity.this,
@@ -100,7 +100,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
                         Toast.makeText(EditActivity.this, R.string.successful_product_saving, Toast.LENGTH_SHORT).show();
                         finish();
                     }
-                } else {
+                } else {    // Otherwise its an editing
                     boolean updateSuccess = DatabaseHandler.updateData(
                             EditActivity.this,
                             mCurrentProductUri,
@@ -136,6 +136,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         if (data == null || data.getCount() < 1)
             return;
 
+        // Setting texts to the editTexts after the load
         if (data.moveToFirst()) {
             String name = data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_NAME));
             String price = data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRICE));
@@ -160,6 +161,9 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         suppPhoneEditText.setText("");
     }
 
+    /**
+     *  Returns back a product depends on the edit text values
+     * */
     private Product getProductFromEditTexts() {
         return new Product(
                 EditActivity.this,
@@ -181,9 +185,9 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:{
-                if (!productHasChanged){
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                if (!productHasChanged) {
                     NavUtils.navigateUpFromSameTask(EditActivity.this);
                     return true;
                 }
@@ -192,12 +196,10 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                // User clicked "Discard" button, navigate to parent activity.
                                 NavUtils.navigateUpFromSameTask(EditActivity.this);
                             }
                         };
 
-                // Show a dialog that notifies the user they have unsaved changes
                 showUnsavedChangesDialog(discardButtonClickListener);
                 return true;
             }
@@ -205,8 +207,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         return super.onOptionsItemSelected(item);
     }
 
-    private void showUnsavedChangesDialog(
-            DialogInterface.OnClickListener discardButtonClickListener){
+    private void showUnsavedChangesDialog(DialogInterface.OnClickListener discardButtonClickListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.unsaved_dialog_msg);
         builder.setPositiveButton(R.string.discard_msg, discardButtonClickListener);

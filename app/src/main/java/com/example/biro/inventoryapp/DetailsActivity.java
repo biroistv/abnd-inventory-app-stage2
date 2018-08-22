@@ -70,6 +70,9 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         if (mCurrentProductUri != null)
             getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
 
+        /*
+         *  This listener do the addition
+         * */
         increaseImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +81,9 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
+        /*
+         *  This listener do the subtraction
+         * */
         decreaseImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +93,9 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
+        /*
+         *  This listener delete a product from the database
+         * */
         deleteImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +134,9 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
+        /*
+         *  This listener start a call
+         * */
         callImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +199,13 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         productPhoneTV.setText("");
     }
 
+    /**
+     *  This method create a dialog window and do a operation based on the input operation parameter
+     *
+     *  @param prod         product with the data
+     *  @param title        operation name
+     *  @param operation    what is the operation
+     * */
     private void quantityAlertDialog(final Product prod,
                                      @NonNull final String title,
                                      @NonNull final Operation operation){
@@ -207,13 +226,21 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
                             String strValue = input.getText().toString();
 
+                            // If the string value is empty then the value is stay the default 1
                             int value = 1;
                             if (!strValue.isEmpty())
                                 value = Integer.parseInt(input.getText().toString());
 
                             switch (operation){
                                 case DECREASE: {
-                                    prod.decreaseProductQuantity(value);
+                                    boolean decreaseSuccess = prod.decreaseProductQuantity(value);
+                                    if (!decreaseSuccess){
+                                        Toast.makeText(
+                                                DetailsActivity.this,
+                                                (DetailsActivity.this).getString(R.string.you_cant_delete_x_product, value),
+                                                Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
                                     break;
                                 }
                                 case INCREASE: {

@@ -13,6 +13,9 @@ import com.example.biro.inventoryapp.product.Product;
  */
 public class DatabaseHandler {
 
+    /**
+     * Insert a dummy data to the database.
+     */
     public static void insertDummyData(Context context) {
         Product product = new Product(
                 context,
@@ -40,7 +43,15 @@ public class DatabaseHandler {
 
     }
 
+    /**
+     * Insert a row to the database with the values of the product
+     *
+     * @param context context
+     * @param product this parameter contains the data
+     * @return result of the insertion
+     */
     public static boolean insertData(Context context, Product product) {
+        // Extract the ContentValues from the product
         ContentValues values = product.getProductAsCValue();
 
         if (values == null)
@@ -54,8 +65,18 @@ public class DatabaseHandler {
         return newUri != null;
     }
 
+    /**
+     * Update a specific a row in the database with the values of the product
+     *
+     * @param context           context
+     * @param currentProductUri The uri of that row what we want update
+     * @param product           this parameter contains the data
+     * @param selection         selection statements
+     * @param selectionArgs     selection args
+     * @return result of the update
+     */
     public static boolean updateData(Context context, Uri currentProductUri, Product product, String selection, String[] selectionArgs) {
-
+        // Extract the ContentValues from the product
         ContentValues values = product.getProductAsCValue();
 
         if (values == null)
@@ -71,10 +92,17 @@ public class DatabaseHandler {
         return rowEffected != 0;
     }
 
-    public static Boolean deleteData(Context context, Uri currentProductUri){
+    /**
+     * delete a specific a row from the database depend on the input Uri parameter
+     *
+     * @param context           context
+     * @param currentProductUri The uri of that row what we want delete
+     * @return result of the delete
+     */
+    public static Boolean deleteData(Context context, Uri currentProductUri) {
         int rowDeleted = 0;
 
-        if (currentProductUri != null){
+        if (currentProductUri != null) {
             rowDeleted = context.getContentResolver().delete(
                     currentProductUri,
                     null,
@@ -85,6 +113,11 @@ public class DatabaseHandler {
         return rowDeleted != 0;
     }
 
+    /**
+     * Delete all the rows inside the product table
+     *
+     * @param context context
+     */
     public static void clearProductTable(Context context) {
         int rowEffected = context.getContentResolver().delete(
                 ProductContract.ProductEntry.CONTENT_URI,

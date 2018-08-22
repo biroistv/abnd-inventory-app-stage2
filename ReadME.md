@@ -11,8 +11,8 @@ About the app...
 - **Overall Layout**
 
 - [x] The app contains activities and/or fragments
-- [ ] Add inventory
-- [ ] See Product Details
+- [x] Add inventory
+- [x] See Product Details
 - [x] Edit Product Details
 - [x] See a list of all inventory from a Main Activity
 - [x] Using a single activity
@@ -21,16 +21,16 @@ About the app...
 - **List Item Layout in the Main Activity**
 
 - [x] Each list item displays the Product Name, Price and Quantity
-- [ ] Each list item contains a Sale `button` that reduce the total quantity of that particular product by one
-- [ ] Handling the negative product quantity
+- [x] Each list item contains a Sale `button` that reduce the total quantity of that particular product by one
+- [x] Handling the negative product quantity
 
 - **Product Detail Layout**
 
-- [ ] The Product Detail Layout displays the Product Name, Price, Quantity, Supplier Name, and Supplier Phone Number that's stored in the database
-- [ ] The Product Detail Layout also contains buttons that increase and decrease the available quantity displayed
-- [ ] Add a check in the code to ensure that no negative quantities display (zero is the lowest amount)
-- [ ] The Product Detail Layout contains a button to delete the product record entirely
-- [ ] The Product Detail Layout contains a button to order from the supplier. In other words, there exists a button to contains a button for the user to contact the supplier via an intent to a phone app using the Supplier Phone Number stored in the database
+- [x] The Product Detail Layout displays the Product Name, Price, Quantity, Supplier Name, and Supplier Phone Number that's stored in the database
+- [x] The Product Detail Layout also contains buttons that increase and decrease the available quantity displayed
+- [x] Add a check in the code to ensure that no negative quantities display (zero is the lowest amount)
+- [x] The Product Detail Layout contains a button to delete the product record entirely
+- [x] The Product Detail Layout contains a button to order from the supplier. In other words, there exists a button to contains a button for the user to contact the supplier via an intent to a phone app using the Supplier Phone Number stored in the database
 
 - **Default TextView**
 
@@ -40,7 +40,7 @@ About the app...
 
 - **Runtime Errors**
   
-- [ ] The code runs without errors. For example, when user inputs product information (quantity, price, name), instead of erroring out, the app includes logic to validate that no null values are accepted. If a null value is inputted, add a Toast that prompts the user to input the correct information before they can continue.
+- [x] The code runs without errors. For example, when user inputs product information (quantity, price, name), instead of erroring out, the app includes logic to validate that no null values are accepted. If a null value is inputted, add a Toast that prompts the user to input the correct information before they can continue.
 
 - **ListView Population**
 
@@ -57,21 +57,21 @@ About the app...
 
 - **Sale Button**
 
-- [ ] In the Main Activity that displays a list of all available inventory, each List Item contains a Sale Button which reduces the available quantity for that particular product by one (include logic so that no negative quantities are displayed).
+- [x] In the Main Activity that displays a list of all available inventory, each List Item contains a Sale Button which reduces the available quantity for that particular product by one (include logic so that no negative quantities are displayed).
 
 - **Detail View Intent**
 
-- [ ] When a user clicks on a List Item from the Main Activity, it opens up the detail screen for the correct product.
+- [x] When a user clicks on a List Item from the Main Activity, it opens up the detail screen for the correct product.
 
 - **Modify Quantity Buttons**
 
-- [ ] In the Detail View for each item, there are Buttons that correctly increase or decrease the quantity for the correct product.
-- [ ] Add a check in the code to ensure that no negative quantities display (zero is the lowest amount).
+- [x] In the Detail View for each item, there are Buttons that correctly increase or decrease the quantity for the correct product.
+- [x] Add a check in the code to ensure that no negative quantities display (zero is the lowest amount).
 - [ ] The student may also add input for how much to increase or decrease the quantity by if not using the default of 1.
 
 - **Order Button**
 
-- [ ] The Detail Layout contains a button for the user to contact the supplier via an intent to a phone app using the Supplier Phone Number stored in the database.
+- [x] The Detail Layout contains a button for the user to contact the supplier via an intent to a phone app using the Supplier Phone Number stored in the database.
 
 - **Delete Button**
 
